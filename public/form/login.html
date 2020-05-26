@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" type="text/css" href="../bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="form.css">
+  <link rel="stylesheet" type="text/css" href="bar.css">
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-custom py-2">
+    <a class="navbar-brand text-white" href="#">
+      <img src="../icons/bug.png" width="64" height="64" class="d-inline-block align-center" alt="">
+      BugTracker
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link text-white nit-custom" href="#">About <span class="sr-only">(current)</span></a>
+        <a class="nav-item nav-link text-white nit-custom" href="#">SignUp</a>
+      </div>
+    </div>
+  </nav>
+
+  <div id="login-img">
+    <div class="wrapper fadeInDown">
+      <div id="formContent">
+
+        <!-- Icon -->
+        <div class="fadeIn first">
+          <img id="icon" src="../icons/lock-fill.svg" alt="Login" width="30em" height="30em">
+        </div>
+
+        <!-- Login Form -->
+        <form>
+          <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
+          <input type="password" id="password" class="fadeIn third" name="login" placeholder="password">
+          <input type="submit" class="fadeIn fourth" value="Log In">
+        </form>
+
+        <!-- Remind Passowrd -->
+        <div id="formFooter">
+          <a class="underlineHover" href="#">Forgot Password?</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
