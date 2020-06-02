@@ -1,0 +1,80 @@
+doctype html
+html
+  head
+    title Project
+    link(rel='stylesheet', type='text/css', href='/bootstrap/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/navbar-dashboard.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/issues-project.css')
+  body
+    nav.navbar.navbar-expand-lg.navbar-custom.py-2
+      a.navbar-brand.text-white(href='/')
+        img.d-inline-block.align-center(src='/icons/bug.png', width='64', height='64', alt='')
+        | 	  	BugTracker
+      button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarNavAltMarkup', aria-controls='navbarNavAltMarkup', aria-expanded='false', aria-label='Toggle navigation')
+        span.navbar-toggler-icon
+      #navbarNavAltMarkup.collapse.navbar-collapse.justify-content-end
+        .navbar-nav
+          a.nav-item.nav-link.text-white.nit-custom(href='/about')
+            | About 
+            span.sr-only (current)
+    .sidenav.clr-side
+      .clr-side-hvr
+        a(href='/dashboard')
+          img.align-center(src='/icons/house-fill.svg', width='24', height='24', alt='')
+          br
+          | 				Home
+      hr
+      .clr-side-hvr
+        a(href='/issues')
+          img.align-center(src='/icons/file-ruled.svg', width='24', height='24', alt='')
+          br
+          | 				Issues
+      hr
+      .clr-side-hvr
+        a(href='/projects')
+          img.align-center(src='/icons/grid.svg', width='24', height='24', alt='')
+          br
+          | 				Projects
+        hr
+      .clr-side-hvr
+        a(href='/progress')
+          img.align-center(src='/icons/graph-up.svg', width='24', height='24', alt='')
+          br
+          | 				Progress
+    .main.h-100
+      .container-fluid.h-100
+        .row.h-100
+          .col-xs-12.col-md-6.bg-success
+            .card.card-custom
+              img.card-img-top.card-img(src='/icons/create.png', alt='Card image cap')
+              .card-body
+                h5.card-title.cntr Create Issue
+                p.card-text.cntr
+                  | Some quick example text to build on the card title and make up the bulk of the card's content.
+                .cntr
+                  a.btn.btn-primary(href='#') Create
+            .card.card-custom
+              img.card-img-top.card-img(src='/icons/assign.png', alt='Card image cap')
+              .card-body
+                h5.card-title.cntr Unassigned Issues
+                p.card-text.cntr
+                  | Some quick example text to build on the card title and make up the bulk of the card's content.
+                .cntr
+                  a.btn.btn-primary(href='#') Explore
+          .col-xs-12.col-md-6.bg-danger
+            .card.card-custom
+              img.card-img-top.card-img(src='/icons/open.png', alt='Card image cap')
+              .card-body
+                h5.card-title.cntr Open Issues
+                p.card-text.cntr
+                  | Some quick example text to build on the card title and make up the bulk of the card's content.
+                .cntr
+                  a.btn.btn-primary(href='#') Explore
+            .card.card-custom
+              img.card-img-top.card-img(src='/icons/resolved.png', alt='Card image cap')
+              .card-body
+                h5.card-title.cntr Resolved Issues
+                p.card-text.cntr
+                  | Some quick example text to build on the card title and make up the bulk of the card's content.
+                .cntr
+                  a.btn.btn-primary(href='#') Explore

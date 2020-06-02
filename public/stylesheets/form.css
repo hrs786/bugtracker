@@ -53,9 +53,9 @@ a {
 }
 
 #login-img,#signup-img{
-  background:url("../images/wal.jpeg");
+  background:url("../images/wal.JPEG");
   background-size: cover;
-  height: 50rem;
+  height: 100%;
 }
 
 /* FORM TYPOGRAPHY*/
