@@ -1,12 +1,13 @@
 doctype html
 html
   head
-    title Project
+    title
+    title Create Issue
     link(rel='stylesheet', type='text/css', href='/bootstrap/bootstrap.min.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/navbar-dashboard.css')
-    link(rel='stylesheet', type='text/css', href='/stylesheets/projects-options.css')
-  
+    link(rel='stylesheet', type='text/css', href='/stylesheets/create-issue.css')
 
+  
   body
     nav.navbar.navbar-expand-lg.navbar-custom.py-2
       a.navbar-brand.text-white(href='/')
@@ -19,7 +20,7 @@ html
           a.nav-item.nav-link.text-white.nit-custom(href='/about')
             | About 
             span.sr-only (current)
-      
+    
 
     .sidenav.clr-side
       .clr-side-hvr
@@ -41,46 +42,33 @@ html
           | 				Projects
         hr
       .clr-side-hvr
-        a(href='/progress')
+        a(href='#')
           img.align-center(src='/icons/graph-up.svg', width='24', height='24', alt='')
           br
           | 				Progress
     
-
-    .main.h-100
-      .container-fluid.h-100
-        .row.h-100
-          .col-xs-12.col-md-6.bg-success
-            .card.card-custom
-              .card-body
-                h5.card-title.cntr Description
-                img.card-img(src='/icons/question.png', alt='')
-                p.card-text.cntr What this project is for?
-                .cntr
-                  a.btn.btn-primary(href='#') Explore
-            
-            .card.card-custom
-              .card-body
-                h5.card-title.cntr(title='Project Name') Issues
-                img.card-img(src='/icons/issue.png', alt='')
-                p.card-text.cntr Issues maintained
-                .cntr
-                  a.btn.btn-primary(href=`/projects/`+project_id+`/issues`) Explore
-          
-
-          .col-xs-12.col-md-6.bg-danger
-            .card.card-custom
-              .card-body
-                h5.card-title.cntr Members
-                img.card-img(src='/icons/team.png', alt='')
-                p.card-text.cntr Collaborators in project
-                .cntr
-                  a.btn.btn-primary(href='#') Explore
-            
-            .card.card-custom
-              .card-body
-                h5.card-title.cntr Progress
-                img.card-img(src='/icons/graph-up.svg', alt='')
-                p.card-text.cntr How much is project completed?
-                .cntr
-                  a.btn.btn-primary(href='#') Explore
+    .form
+      form(method='POST', action=`/projects/`+project_id+`/issues/unassigned`, enctype='multipart/form-data')
+        .custom-header
+          | Issue Information
+        .form-group
+          label(for='personId') Person ID
+          input.form-control(type='text', name='person_id', placeholder='Enter person id')
+        .form-group
+          label(for='priority') Issue Priority
+          select.form-control(name='priority')
+            option(value='minor') Minor
+            option(value='normal', selected='') Normal
+            option(value='major') Major
+            option(value='critical') Critical
+        .form-group
+          label(for='summary')
+            | Summary 
+            small.text-muted (max 200 characters)
+          textarea.form-control(name='summary', rows='3', maxlength='200', title='maximum 200 characters', placeholder='summary', required)
+        .form-group
+          label(for='description')
+            | Description File 
+            small.text-muted (PDF format)
+          input(type='file')
+        button.btn.btn-primary(type='submit') Submit
