@@ -6,7 +6,7 @@ var issues = require('./routes/issues')
 var projects = require('./routes/projects')
 
 app.use(express.static('./public'))
-app.use(bodyParser({extended:true}))
+app.use(bodyParser.urlencoded({extended:true}))
 app.set('view engine','pug')
 
 

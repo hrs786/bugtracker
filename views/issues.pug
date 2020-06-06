@@ -53,13 +53,12 @@ html
           .col-xs-12.col-md-12.bg-success
             .card.card-custom
               .card-header.header-custom
-                a(href='#')
-                  img.align-center(src='/icons/list-ul.svg', width='30', height='30', alt='')
-                  | 					    		Get Issue By Id
+                img.align-center(src='/icons/list-ul.svg', width='30', height='30', alt='')
+                | 					    		Get Issue By Id
                 .search
                   input(type='text', name='issue', placeholder='#issue')
                   button(type='submit')
-                    img(src='../icons/search.svg', height='16', width='16', alt='')
+                    img(src='/icons/search.svg', height='16', width='16', alt='')
               .card-body.zero-pad
                 table.data-table
                   thead
@@ -71,7 +70,8 @@ html
                   tbody 
                     each issue in issues
                       tr
-                        td= issue.id
+                        td
+                          a(href='/issues/' + issue.id)= issue.id
                         td= issue.status
                         td= issue.priority
                         td= issue.summary

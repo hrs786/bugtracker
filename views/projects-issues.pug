@@ -68,7 +68,7 @@ html
                 p.card-text.cntr
                   | Some quick example text to build on the card title and make up the bulk of the card's content.
                 .cntr
-                  a.btn.btn-primary(href='#') Explore
+                  a.btn.btn-primary(href=`/projects/`+project_id+`/issues/unassigned`) Explore
 
           
           .col-xs-12.col-md-6.bg-danger
@@ -79,7 +79,7 @@ html
                 p.card-text.cntr
                   | Some quick example text to build on the card title and make up the bulk of the card's content.
                 .cntr
-                  a.btn.btn-primary(href='#') Explore
+                  a.btn.btn-primary(href=`/projects/`+project_id+`/issues/open`) Explore
             
             .card.card-custom
               img.card-img-top.card-img(src='/icons/resolved.png', alt='Card image cap')
@@ -88,4 +88,4 @@ html
                 p.card-text.cntr
                   | Some quick example text to build on the card title and make up the bulk of the card's content.
                 .cntr
-                  a.btn.btn-primary(href='#') Explore
+                  a.btn.btn-primary(href=`/projects/`+project_id+`/issues/resolved`) Explore
