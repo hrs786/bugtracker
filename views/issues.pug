@@ -2,26 +2,32 @@ doctype html
 html
   head
     title Issues
-    link(rel='stylesheet', type='text/css', href='/bootstrap/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='/bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/navbar-dashboard.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/issues.css')
   
 
   body
     nav.navbar.navbar-expand-lg.navbar-custom.py-2
-      a.navbar-brand.text-white(href='#')
+      a.navbar-brand.text-white(href='/')
         img.d-inline-block.align-center(src='/icons/bug.png', width='64', height='64', alt='')
         | 	  	BugTracker
       button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarNavAltMarkup', aria-controls='navbarNavAltMarkup', aria-expanded='false', aria-label='Toggle navigation')
         span.navbar-toggler-icon
       #navbarNavAltMarkup.collapse.navbar-collapse.justify-content-end
         .navbar-nav
-          a.nav-item.nav-link.text-white.nit-custom(href='#')
-            | About 
+          a.nav-item.nav-link.text-white.nit-custom(href='/logout')
+            | Logout
             span.sr-only (current)
     
 
     .sidenav.clr-side
+      .clr-side-hvr
+        a(href='/profile')
+          img.align-center(src='/icons/person-fill.svg', width='24', height='24', alt='')
+          br
+          |                 Profile
+      hr
       .clr-side-hvr
         a(href='/dashboard')
           img.align-center(src='/icons/house-fill.svg', width='24', height='24', alt='')

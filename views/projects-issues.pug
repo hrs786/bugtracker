@@ -2,7 +2,7 @@ doctype html
 html
   head
     title Project
-    link(rel='stylesheet', type='text/css', href='/bootstrap/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='/bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/navbar-dashboard.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/projects-issues.css')
   
@@ -16,12 +16,18 @@ html
         span.navbar-toggler-icon
       #navbarNavAltMarkup.collapse.navbar-collapse.justify-content-end
         .navbar-nav
-          a.nav-item.nav-link.text-white.nit-custom(href='/about')
-            | About 
+          a.nav-item.nav-link.text-white.nit-custom(href='/logout')
+            | Logout
             span.sr-only (current)
     
 
     .sidenav.clr-side
+      .clr-side-hvr
+        a(href='/profile')
+          img.align-center(src='/icons/person-fill.svg', width='24', height='24', alt='')
+          br
+          |                 Profile
+      hr
       .clr-side-hvr
         a(href='/dashboard')
           img.align-center(src='/icons/house-fill.svg', width='24', height='24', alt='')

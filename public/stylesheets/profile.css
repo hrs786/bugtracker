@@ -1,0 +1,96 @@
+body, html{
+	height:100%;
+}
+
+.main{
+	margin-left: 160px;
+	padding: 0px 0px;
+	font-size: 1.5rem;
+}
+
+.sidenav{
+  height: 100%;
+  width: 160px;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+.sidenav a {
+	text-align: center;
+	padding: 2px 1px 5px 1px;
+	text-decoration: none;
+	font-size: 1.2em;
+	color: black;
+	display: block;
+	margin-top:8px;
+}
+
+hr {
+	margin: 0px 0px;
+	border: 0;
+	height: 1px;
+	background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
+
+.clr-side{
+	background-color: #C5D0D9;
+}
+
+.clr-side-hvr:hover{
+	background-color: white;
+}
+
+.custom{
+	width: 80%;
+	margin-left: 10%;
+	margin-right: 10%
+}
+
+
+.tab-content h4{
+	font-weight: 700;
+	text-align: center;
+	font-size: 3rem;
+}
+
+.tab-content img{
+	height: 250px;
+	width: 250px;
+}
+
+input[type=file]{
+	font-size: 1rem;
+}
+
+.cntr{
+	text-align: center;	
+}
+
+.palign{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+}
+
+.detail div{
+	margin-top: 1.5rem;
+	font-weight: 600;
+}
+
+.detail div span{
+	font-weight: 400;
+}
+
+input[type=button]{
+	margin-left: 1rem;;
+}

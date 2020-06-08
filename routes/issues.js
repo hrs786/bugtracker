@@ -1,16 +1,18 @@
-var express = require('express')
-var router = express.Router()
+const express = require('express')
+const connection = require('../db')
+const secured = require('../middleware/secured')
 
-var connection = require('../db')
+const router = express.Router()
 
-router.get('/',(req,res)=>{
+
+router.get('/', secured, (req,res)=>{
 	let query = `SELECT id,status,priority,summary FROM issue ORDER BY open_date DESC`
 	connection.query(query,(err,result,fields)=>{
 		res.render('issues',{issues:result})
 	})
 })
 
-router.get('/:id',(req,res)=>{
+router.get('/:id', secured, (req,res)=>{
 	let issue_id = [req.params.id]
 	let query = `SELECT * FROM issue WHERE id = ?`
 	connection.query(query, issue_id, (err,result,fields)=>{

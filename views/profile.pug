@@ -1,0 +1,128 @@
+doctype html
+html
+  head
+    title Profile
+    link(rel='stylesheet', type='text/css', href='/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/navbar-dashboard.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/profile.css')
+
+
+  body
+    nav.navbar.navbar-expand-lg.navbar-custom.py-2
+      a.navbar-brand.text-white(href='/')
+        img.d-inline-block.align-center(src='/icons/bug.png', width='64', height='64', alt='')
+        |         BugTracker
+      button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarNavAltMarkup', aria-controls='navbarNavAltMarkup', aria-expanded='false', aria-label='Toggle navigation')
+        span.navbar-toggler-icon
+      #navbarNavAltMarkup.collapse.navbar-collapse.justify-content-end
+        .navbar-nav
+          a.nav-item.nav-link.text-white.nit-custom(href='/logout')
+            | Logout
+            span.sr-only (current)
+    
+
+    .sidenav.clr-side
+      .clr-side-hvr
+        a(href='/profile')
+          img.align-center(src='/icons/person-fill.svg', width='24', height='24', alt='')
+          br
+          |                 Profile
+      hr
+      .clr-side-hvr
+        a(href='/dashboard')
+          img.align-center(src='/icons/house-fill.svg', width='24', height='24', alt='')
+          br
+          |                 Home
+      hr
+      .clr-side-hvr
+        a(href='/issues')
+          img.align-center(src='/icons/file-ruled.svg', width='24', height='24', alt='')
+          br
+          |                 Issues
+      hr
+      .clr-side-hvr
+        a(href='/projects')
+          img.align-center(src='/icons/grid.svg', width='24', height='24', alt='')
+          br
+          |                 Projects
+        hr
+      .clr-side-hvr
+        a(href='#')
+          img.align-center(src='/icons/graph-up.svg', width='24', height='24', alt='')
+          br
+          |                 Progress
+    
+
+    .main.h-100
+      .container-fluid.h-100
+        .row.h-100.custom
+          .col-lg-12.my-5
+            ul#myTab.nav.nav-tabs(role='tablist')
+              li.nav-item
+                a#profile-tab.nav-link.active(data-toggle='tab', href='#profile', role='tab', aria-controls='profile', aria-selected='true') Profile
+              li.nav-item
+                a#edit-tab.nav-link(data-toggle='tab', href='#edit', role='tab', aria-controls='edit', aria-selected='false') Edit
+            
+            .tab-content
+              #profile.tab-pane.fade.show.active(role='tabpanel', aria-labelledby='profile-tab')
+                h4.my-3 User Profile
+                .row.mt-4
+                  .col-xs-12.col-md-6.mx-auto
+                    img.img-fluid.rounded-circle.my-3.palign(src='/icons/profile.jpg', alt='avatar')
+                  .col-md-12.cntr.detail
+                    div
+                      | Username: 
+                      span usr
+                    div
+                      | Email: 
+                      span fghjk@gmail.com
+                    div
+                      | Name: 
+                      span fn ln
+                    div
+                      | Role: 
+                      span Web Designer, UI/UX Engineer
+              
+              #edit.tab-pane.fade(role='tabpanel', aria-labelledby='edit-tab')
+                h4.my-3 Edit Profile
+                form(role='form')
+                  .form-group.row
+                    label.col-lg-3.col-form-label.form-control-label Profile Pic
+                    .col-lg-9
+                      input#file(type='file')
+                  .form-group.row
+                    label.col-lg-3.col-form-label.form-control-label First name
+                    .col-lg-9
+                      input.form-control(type='text', value='Jane')
+                  .form-group.row
+                    label.col-lg-3.col-form-label.form-control-label Last name
+                    .col-lg-9
+                      input.form-control(type='text', value='Bishop')
+                  .form-group.row
+                    label.col-lg-3.col-form-label.form-control-label Email
+                    .col-lg-9
+                      input.form-control(type='email', value='email@gmail.com')
+                  .form-group.row
+                    label.col-lg-3.col-form-label.form-control-label Role
+                    .col-lg-9
+                      input.form-control(type='text', value='')
+                  .form-group.row
+                    label.col-lg-3.col-form-label.form-control-label Username
+                    .col-lg-9
+                      input.form-control(type='text', value='janeuser')
+                  .form-group.row
+                    label.col-lg-3.col-form-label.form-control-label Password
+                    .col-lg-9
+                      input.form-control(type='password', value='11111122333')
+                  .form-group.row
+                    label.col-lg-3.col-form-label.form-control-label Confirm password
+                    .col-lg-9
+                      input.form-control(type='password', value='11111122333')
+                  .form-group.row
+                    label.col-lg-3.col-form-label.form-control-label
+                    .col-lg-9
+                      input.btn.btn-secondary(type='reset', value='Cancel')
+                      input.btn.btn-primary(type='button', value='Save Changes')
+    
+    script(type='text/javascript', src='/bootstrap/js/jquery-3.5.1.slim.min.js')
+    script(type='text/javascript', src='/bootstrap/js/bootstrap.bundle.min.js')

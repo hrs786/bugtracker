@@ -1,11 +1,13 @@
-var mysql = require('mysql')
-var dbConfig = require('./dbconfig')
+const mysql = require('mysql')
+const dotenv = require('dotenv')
+
+dotenv.config()
 
 var connection = mysql.createConnection({
-    host:dbConfig.host,
-	user:dbConfig.user,
-	password:dbConfig.password,
-	database:dbConfig.database
+    host:process.env.DB_HOST,
+	user:process.env.DB_USER,
+	password:process.env.DB_PASS,
+	database:process.env.DB_NAME
 })
 
 connection.connect((err)=>{
