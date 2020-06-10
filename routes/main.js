@@ -1,5 +1,5 @@
 const express = require('express')
-const secured = require('../middleware/secured')
+const secured = require('../lib/middleware/secured')
 
 const router = express.Router()
 
@@ -14,7 +14,7 @@ router.get('/about',(req,res)=>{
 
 router.get('/dashboard', secured, (req, res, next) => {
 	const { _raw, _json, ...userProfile } = req.user;
-	console.log(userProfile);
+	//console.log(userProfile);
 	
 	res.render('dashboard', {
 		title: 'Profile',
@@ -24,10 +24,6 @@ router.get('/dashboard', secured, (req, res, next) => {
 
 router.get('/progress', secured, (req,res)=>{
 	res.send("u r on progress page")
-})
-
-router.get('/terms',(req,res)=>{
-	res.send("you r on privacy policy page")
 })
 
 module.exports = router

@@ -12,7 +12,7 @@ const Auth0Strategy = require("passport-auth0");
 require("dotenv").config();
 
 const authRouter = require("./routes/auth")
-const checkAuth = require("./middleware/isAuthenticated")
+const checkAuth = require("./lib/middleware/isAuthenticated")
 const main = require("./routes/main")
 const profile = require("./routes/profile")
 const issues = require("./routes/issues")

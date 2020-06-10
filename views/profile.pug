@@ -72,10 +72,10 @@ html
                   .col-md-12.cntr.detail
                     div
                       | Username: 
-                      span usr
+                      span= username
                     div
                       | Email: 
-                      span fghjk@gmail.com
+                      span= email
                     div
                       | Name: 
                       span fn ln
@@ -101,7 +101,7 @@ html
                   .form-group.row
                     label.col-lg-3.col-form-label.form-control-label Email
                     .col-lg-9
-                      input.form-control(type='email', value='email@gmail.com')
+                      input.form-control(type='email', value=email, disabled)
                   .form-group.row
                     label.col-lg-3.col-form-label.form-control-label Role
                     .col-lg-9
@@ -109,15 +109,15 @@ html
                   .form-group.row
                     label.col-lg-3.col-form-label.form-control-label Username
                     .col-lg-9
-                      input.form-control(type='text', value='janeuser')
+                      input.form-control(type='text', value=username, disabled)
                   .form-group.row
                     label.col-lg-3.col-form-label.form-control-label Password
                     .col-lg-9
-                      input.form-control(type='password', value='11111122333')
+                      input.form-control(type='password')
                   .form-group.row
                     label.col-lg-3.col-form-label.form-control-label Confirm password
                     .col-lg-9
-                      input.form-control(type='password', value='11111122333')
+                      input.form-control(type='password')
                   .form-group.row
                     label.col-lg-3.col-form-label.form-control-label
                     .col-lg-9
