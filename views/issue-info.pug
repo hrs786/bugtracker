@@ -87,5 +87,8 @@ html
         
           .summary-head.wt
             | Description : 
-            a(href='#') File
+            if(issue[0].description == 1)
+              a(href='/issues/' + issue[0].id + '/description', target='_blank') File
+            else
+              span= '[No description available]'
         

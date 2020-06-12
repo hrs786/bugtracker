@@ -103,6 +103,11 @@ hr {
 	margin-top: 3rem;
 	margin-left: 10%;
 }
+
+.summary-head span{
+	font-weight: 400;
+}
+
 .summary{
 	background-color: white;
 	border: 2px solid gray;

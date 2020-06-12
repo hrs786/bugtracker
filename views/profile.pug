@@ -78,30 +78,29 @@ html
                       span= email
                     div
                       | Name: 
-                      span fn ln
+                      span= name
                     div
                       | Role: 
                       span Web Designer, UI/UX Engineer
               
+              - const message = "Must contain at least 1 number, 1 uppercase and lowercase letter, and at least 8 or more characters"
+              - const format = "(^$)|((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,})"
+
               #edit.tab-pane.fade(role='tabpanel', aria-labelledby='edit-tab')
                 h4.my-3 Edit Profile
-                form(role='form')
-                  .form-group.row
+                form(role='form', action='/profile' + '?_method=PUT', method='POST', oninput='password2.setCustomValidity(password2.value != password1.value ? "Passwords do not match." : "")')
+                  //- .form-group.row
                     label.col-lg-3.col-form-label.form-control-label Profile Pic
                     .col-lg-9
                       input#file(type='file')
                   .form-group.row
-                    label.col-lg-3.col-form-label.form-control-label First name
+                    label.col-lg-3.col-form-label.form-control-label Name
                     .col-lg-9
-                      input.form-control(type='text', value='Jane')
-                  .form-group.row
-                    label.col-lg-3.col-form-label.form-control-label Last name
-                    .col-lg-9
-                      input.form-control(type='text', value='Bishop')
+                      input.form-control(type='text', value = name, name='personName')
                   .form-group.row
                     label.col-lg-3.col-form-label.form-control-label Email
                     .col-lg-9
-                      input.form-control(type='email', value=email, disabled)
+                      input.form-control(type='email', value = email, disabled)
                   .form-group.row
                     label.col-lg-3.col-form-label.form-control-label Role
                     .col-lg-9
@@ -109,20 +108,21 @@ html
                   .form-group.row
                     label.col-lg-3.col-form-label.form-control-label Username
                     .col-lg-9
-                      input.form-control(type='text', value=username, disabled)
+                      input.form-control(type='text', value = username, disabled)
                   .form-group.row
-                    label.col-lg-3.col-form-label.form-control-label Password
+                    label.col-lg-3.col-form-label.form-control-label New Password
                     .col-lg-9
-                      input.form-control(type='password')
+                      input.form-control(type='password', name='password1', pattern=format, title=message)
+                      small.text-muted Leave Password field empty if don't want to change | New Password: Must contain at least 1 number, 1 uppercase and lowercase letter, and length>=8
                   .form-group.row
                     label.col-lg-3.col-form-label.form-control-label Confirm password
                     .col-lg-9
-                      input.form-control(type='password')
+                      input.form-control(type='password', name='password2')
                   .form-group.row
                     label.col-lg-3.col-form-label.form-control-label
                     .col-lg-9
                       input.btn.btn-secondary(type='reset', value='Cancel')
-                      input.btn.btn-primary(type='button', value='Save Changes')
+                      input.btn.btn-primary(type='submit', value='Save Changes')
     
     script(type='text/javascript', src='/bootstrap/js/jquery-3.5.1.slim.min.js')
     script(type='text/javascript', src='/bootstrap/js/bootstrap.bundle.min.js')

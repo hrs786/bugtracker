@@ -91,6 +91,10 @@ input[type=file]{
 	font-weight: 400;
 }
 
-input[type=button]{
+input[type=submit]{
 	margin-left: 1rem;;
+}
+
+.text-muted{
+	font-size: 0.8rem;
 }

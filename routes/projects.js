@@ -25,8 +25,8 @@ const upload = multer({
 	storage: storage,
 	fileFilter: function(req, file, cb){
 		var ext = path.extname(file.originalname)
-		if(ext !== '.pdf' && ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg' && ext !== '.gif'){
-			return cb(new Error('Only PDF and Images are allowed'))
+		if(ext !== '.pdf'){
+			return cb(new Error('Only PDFs are allowed'))
 		}
 		cb(null,true)
 	}
@@ -55,7 +55,7 @@ router.get('/:id/issues/unassigned', secured, (req,res)=>{
 	let query = `SELECT BIN_TO_UUID(id) AS id,status,priority,summary FROM issue WHERE status = ? AND project_id = ? ORDER BY open_date DESC`
 	let q = connection.query(query, arr,(err,result,fields)=>{
 		//console.log(q.sql) -> to see actual query as in db
-		res.render('issues',{issues:result})
+		res.render('issues',{issues:result, srch: false})
 	})
 })
 
@@ -81,7 +81,7 @@ router.get('/:id/issues/open', secured, (req,res)=>{
 	let query = `SELECT BIN_TO_UUID(id) AS id,status,priority,summary FROM issue WHERE status = ? AND project_id = ? ORDER BY open_date DESC`
 	let q = connection.query(query, arr,(err,result,fields)=>{
 		//console.log(q.sql) -> to see actual query as in db
-		res.render('issues',{issues: result})
+		res.render('issues',{issues: result, srch: false})
 	})
 })
 
@@ -90,7 +90,7 @@ router.get('/:id/issues/resolved', secured, (req,res)=>{
 	let query = `SELECT BIN_TO_UUID(id) AS id,status,priority,summary FROM issue WHERE status = ? AND project_id = ? ORDER BY open_date DESC`
 	let q = connection.query(query, arr,(err,result,fields)=>{
 		//console.log(q.sql) -> to see actual query as in db
-		res.render('issues',{issues: result})
+		res.render('issues',{issues: result, srch: false})
 	})
 })
 

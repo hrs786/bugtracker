@@ -126,3 +126,14 @@ hr {
 	margin-right: 16px;
 	font-size: 17px;
 }
+
+#redirect{
+	color: black;
+	font-size: 1.5rem;
+	float: right;
+}
+
+#redirect:hover{
+	color: #ffef00;
+	text-decoration: none;
+}
