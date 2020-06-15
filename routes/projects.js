@@ -16,7 +16,8 @@ const storage = multer.diskStorage({
 	},
 	filename: function(req, file, cb){
 		let issue_id = uuidv4()	// UUID - set filename
-		let name = issue_id + path.extname(file.originalname)	// add extension of file
+		let name = issue_id + '.pdf'	// add extension of file
+		
 		cb(null, name)
 	}
 })
@@ -24,9 +25,11 @@ const storage = multer.diskStorage({
 const upload = multer({
 	storage: storage,
 	fileFilter: function(req, file, cb){
-		var ext = path.extname(file.originalname)
-		if(ext !== '.pdf'){
-			return cb(new Error('Only PDFs are allowed'))
+		if(file){
+			var ext = path.extname(file.originalname)
+			if(ext !== '.pdf'){
+				return cb(new Error('Only PDFs are allowed')) // Handled both at front and backend
+			}
 		}
 		cb(null,true)
 	}
@@ -60,11 +63,21 @@ router.get('/:id/issues/unassigned', secured, (req,res)=>{
 })
 
 router.post('/:id/issues/unassigned', secured, upload.single('info'),(req,res)=>{
-	let issue_id = path.parse(req.file.filename).name	// get UUID(filename) -> set issue ID
+	const { _raw, _json, ...userProfile } = req.user;
+	let person_id = (userProfile.user_id).substr(6)
+
+	let issue_id;
+	let description = false;
+	if(req.file){
+		description = true
+		issue_id = path.parse(req.file.filename).name	// get UUID(filename) -> set issue ID
+	} else{
+		issue_id = uuidv4()
+	}
 	
 	let date = new Date()
-	let data = [issue_id, req.body.summary, req.body.person_id, date, (req.body.priority).toUpperCase(), Number(req.params.id)]
-	let query = `INSERT INTO issue (id, summary, opened_by, open_date, priority, project_id) values (UUID_TO_BIN(?), ?, ?, ?, ?, ?)`
+	let data = [issue_id, req.body.summary, person_id, date, (req.body.priority).toUpperCase(), Number(req.params.id), description]
+	let query = `INSERT INTO issue (id, summary, opened_by, open_date, priority, project_id, description) values (UUID_TO_BIN(?), ?, ?, ?, ?, ?, ?)`
 	
 	let q = connection.query(query, data,(err,result,fields)=>{
 		//console.log(q.sql) -> to see actual query as in db

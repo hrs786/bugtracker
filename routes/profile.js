@@ -54,7 +54,7 @@ router.get('/', secured, (req,res)=>{
 
 router.put('/', secured, (req,res)=>{
   const { _raw, _json, ...userProfile } = req.user;
-  // check passwd1 = passwd2
+  // check passwd1 = passwd2 ??????????????
   
   // update name
   let personName = req.body.personName
