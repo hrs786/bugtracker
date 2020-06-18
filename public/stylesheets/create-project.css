@@ -48,57 +48,35 @@ hr {
 	background-color: white;
 }
 
-.card-custom{
-	font-size: 1.2rem;
-	width:60%;
-	margin-right: 20%;
-	margin-left: 20%;
-	margin-top: 3rem;
-	margin-bottom: 3rem;
+.form{
+	height:100%;
+	margin-left: 160px;
 }
 
-.card-img{
-	margin-top: 1rem;
-	margin-left: 45%;
-	margin-right: 45%;
-	height:10%;
-	width: 10%;
+.form form{
+	font-weight: 700;
+	font-size: 1.5rem;
+	padding-top: 3rem;
+	width:80%;
+	margin-right: 10%;
+	margin-left: 10%;
 }
 
-.cntr{
+.custom-header{
+	font-size: 2em;
 	text-align: center;
 }
 
-.details{
-	margin-left:20%;
-	margin-right: 20%;
-	height:1.5em;
+.form-group{
+	padding-top: 1rem;
 }
 
-.details div:nth-of-type(1){
-	float:left;
+.form form button{
+	font-size: 1em;
+	display:block;
+	margin:0 auto;
 }
 
-.details div:nth-of-type(2){
-	float:right;
-}
-
-.card-body p{
-	margin: 0.8em 0em;
-}
-
-.card-body h5{
-	font-size: 2rem; 
-	font-weight: 700;
-}
-
-.new-prj{
-	margin-top: 1rem;
-	margin-bottom: 1rem;
-}
-
-.new-prj .btn{
-	font-size: 1.5rem;
-	margin-left: 45%;
-	margin-right: 45%
+input[type=file]{
+	display: block;
 }

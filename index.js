@@ -13,6 +13,7 @@ require("dotenv").config();
 
 const authRouter = require("./routes/auth")
 const checkAuth = require("./lib/middleware/isAuthenticated")
+const checkAdmin = require('./lib/middleware/isAdmin')
 const main = require("./routes/main")
 const profile = require("./routes/profile")
 const issues = require("./routes/issues")
@@ -101,6 +102,8 @@ passport.deserializeUser((user, done) => {
 
 // isAuthenticated
 app.use(checkAuth)
+// isAdmin
+app.use(checkAdmin)
 
 // Router mounting
 app.use("/",authRouter)

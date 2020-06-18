@@ -19,7 +19,7 @@ const path_audience = '/api/v2/'
 
 
 router.get('/', secured, (req,res)=>{
-  const { _raw, _json, ...userProfile } = req.user;
+  const { _raw, _json, ...userProfile } = req.user;  
 
   let pth = 'users/' + encodeURIComponent(userProfile.user_id)
   let pathEndPoint = path_audience + pth
