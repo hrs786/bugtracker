@@ -1,0 +1,16 @@
+#company{
+    font-size: 2rem;
+}
+
+#data{
+    font-size: 1.2rem;
+}
+
+#foot{
+    word-spacing: 5px;
+}
+
+#foot img{
+    height: 30px;
+    width: 30px;
+}

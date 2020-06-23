@@ -19,41 +19,41 @@ html
       .container-fluid.h-100
         .row.h-100
 
-          .col-xs-12.col-md-6.bg-success
+          .col-xs-12.col-md-6
             .card.card-custom
               img.card-img-top.card-img(src='/icons/create.png', alt='Card image cap')
               .card-body
                 h5.card-title.cntr Create Issue
                 p.card-text.cntr
-                  | Some quick example text to build on the card title and make up the bulk of the card's content.
+                  | Faced problem, add new issue
                 .cntr
-                  a.btn.btn-primary(href=`/projects/`+project_id+`/issues/new`) Create
+                  a.btn.btn-warning(href=`/projects/`+project_id+`/issues/new`) Create
             
             .card.card-custom
               img.card-img-top.card-img(src='/icons/assign.png', alt='Card image cap')
               .card-body
                 h5.card-title.cntr Unassigned Issues
                 p.card-text.cntr
-                  | Some quick example text to build on the card title and make up the bulk of the card's content.
+                  | Assigned to none yet
                 .cntr
-                  a.btn.btn-primary(href=`/projects/`+project_id+`/issues/unassigned`) Explore
+                  a.btn.btn-warning(href=`/projects/`+project_id+`/issues/unassigned`) Explore
 
           
-          .col-xs-12.col-md-6.bg-danger
+          .col-xs-12.col-md-6
             .card.card-custom
               img.card-img-top.card-img(src='/icons/open.png', alt='Card image cap')
               .card-body
                 h5.card-title.cntr Open Issues
                 p.card-text.cntr
-                  | Some quick example text to build on the card title and make up the bulk of the card's content.
+                  | In progress issues
                 .cntr
-                  a.btn.btn-primary(href=`/projects/`+project_id+`/issues/open`) Explore
+                  a.btn.btn-warning(href=`/projects/`+project_id+`/issues/open`) Explore
             
             .card.card-custom
               img.card-img-top.card-img(src='/icons/resolved.png', alt='Card image cap')
               .card-body
                 h5.card-title.cntr Resolved Issues
                 p.card-text.cntr
-                  | Some quick example text to build on the card title and make up the bulk of the card's content.
+                  | Issues solved already
                 .cntr
-                  a.btn.btn-primary(href=`/projects/`+project_id+`/issues/resolved`) Explore
+                  a.btn.btn-warning(href=`/projects/`+project_id+`/issues/resolved`) Explore

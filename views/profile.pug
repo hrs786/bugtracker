@@ -37,9 +37,6 @@ html
                     div
                       | Name: 
                       span= name
-                    div
-                      | Role: 
-                      span Web Designer, UI/UX Engineer
               
               - const message = "Must contain at least 1 number, 1 uppercase and lowercase letter, and at least 8 or more characters"
               - const format = "(^$)|((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,})"
@@ -59,10 +56,6 @@ html
                     label.col-lg-3.col-form-label.form-control-label Email
                     .col-lg-9
                       input.form-control(type='email', value = email, disabled)
-                  .form-group.row
-                    label.col-lg-3.col-form-label.form-control-label Role
-                    .col-lg-9
-                      input.form-control(type='text', value='')
                   .form-group.row
                     label.col-lg-3.col-form-label.form-control-label Username
                     .col-lg-9

@@ -1,0 +1,76 @@
+doctype html
+html
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    title Progress
+    link(rel="icon", href="/icons/bug.png")
+    link(rel='stylesheet', type='text/css', href='/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/head.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/progress.css')
+
+  body
+    include includes/head.pug
+
+    .main.h-100
+      .container
+        canvas#pieChart1
+    
+      .container
+        canvas#pieChart2
+    
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js')
+    script(type='text/javascript', src='/bootstrap/js/jquery-3.5.1.slim.min.js')
+    script(type='text/javascript').
+      // ISSUE STATUS   
+      var labels1 = ["UNASSIGNED","OPEN","RESOLVED"];
+      var data1= "!{JSON.stringify(status_arr)}"
+      data1 = JSON.parse(data1)
+      var pie1 = document.getElementById("pieChart1").getContext('2d');
+      var myChart1 = new Chart(pie1, {
+        type: 'pie',
+        data: {
+          labels: labels1,
+          datasets: [
+            {
+              data: data1,
+              borderColor: ['rgba(192, 0, 0, 1)', 'rgba(75, 192, 192, 1)', 'rgba(173, 255, 47, 1)'],
+              backgroundColor: ['rgba(192, 0, 0, 0.5)', 'rgba(75, 192, 192, 0.5)', 'rgba(173, 255, 47, 0.5)']
+            }
+          ]
+        },
+        options: {
+          title: {
+            display: true,
+            text: "ISSUES STATUS",
+            fontSize: 35
+          }
+        }
+      });
+
+      // UNRESOLVED ISSUE PRIORITY
+      var labels2 = ["MINOR","NORMAL","MAJOR","CRITICAL"];
+      var data2 = "!{JSON.stringify(priority_arr)}"
+      data2 = JSON.parse(data2)
+      var pie2 = document.getElementById("pieChart2").getContext('2d');
+      var myChart2 = new Chart(pie2, {
+        type: 'pie',
+        data: {
+          labels: labels2,
+          datasets: [
+            {
+              data: data2,
+              borderColor: ['rgba(173, 255, 47, 1)', 'rgba(255, 255, 153, 1)', 'rgba(255, 99, 71, 1)', 'rgba(192, 0, 0, 1)'],
+              backgroundColor: ['rgba(173, 255, 47, 0.5)', 'rgba(255, 255, 153, 0.5)', 'rgba(255, 99, 71, 0.5)', 'rgba(192, 0, 0, 0.5)']
+            }
+          ]
+          },
+        options: {
+          title: {
+            display: true,
+            text: "UNRESOLVED ISSUES PRIORITY",
+            fontSize: 35
+          }
+        }
+      });

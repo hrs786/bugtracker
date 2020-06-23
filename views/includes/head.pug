@@ -6,7 +6,7 @@ nav.navbar.navbar-expand-lg.navbar-custom.py-2
     span.navbar-toggler-icon
   #navbarNavAltMarkup.collapse.navbar-collapse.justify-content-end
     .navbar-nav
-      span.text-white= 'Hi, ' + userIs
+      span#user.text-white= 'Hi, ' + userIs
     .navbar-nav
       a.nav-item.nav-link.text-white.nit-custom(href='/logout')
         | Logout
@@ -37,9 +37,3 @@ nav.navbar.navbar-expand-lg.navbar-custom.py-2
       img.align-center(src='/icons/grid.svg', width='24', height='24', alt='')
       br
       | 				Projects
-    hr
-  .clr-side-hvr
-    a(href='#')
-      img.align-center(src='/icons/graph-up.svg', width='24', height='24', alt='')
-      br
-      | 				Progress

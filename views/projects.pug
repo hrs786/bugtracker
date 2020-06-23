@@ -15,11 +15,11 @@ html
 
       -if(isAuthenticated && isAdmin)
         .new-prj
-          a.btn.btn-warning(href='/projects/new') New Project
+          a.btn.btn-success(href='/projects/new') New Project
 
       .container-fluid.h-100
         .row.h-100
-          .col-xs-12.col-md-6.bg-success
+          .col-xs-12.col-md-6
 
             -var max = projects.length
             -for(var i=0; i<max; i+=2){
@@ -38,7 +38,7 @@ html
             -}
             
 
-          .col-xs-12.col-md-6.bg-danger
+          .col-xs-12.col-md-6
 
             -var max = projects.length
             -for(var i=1; i<max; i+=2){

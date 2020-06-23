@@ -5,11 +5,7 @@ const connection = require('../db.js')
 const router = express.Router()
 
 router.get('/',(req,res)=>{
-	res.send("Home")
-})
-
-router.get('/about',(req,res)=>{
-	res.send("you are on about page")
+	res.redirect('/home.html')
 })
 
 router.get('/dashboard', secured, (req, res, next) => {
@@ -18,10 +14,6 @@ router.get('/dashboard', secured, (req, res, next) => {
 		res.render('dashboard');
 	})	
 });
-
-router.get('/progress', secured, (req,res)=>{
-	res.send("u r on progress page")
-})
 
 
 module.exports = router

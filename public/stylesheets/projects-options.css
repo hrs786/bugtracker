@@ -1,3 +1,8 @@
+.main{
+	margin-left: 160px;
+	padding: 0px 0px;
+}
+
 .card-custom{
 	font-size: 1.2rem;
 	width:60%;
@@ -19,6 +24,10 @@
 	text-align: center;
 }
 
+.card-body{
+	background-color: #e2d810;
+}
+
 .card-body p{
 	margin: 0.8em 0em;
 }
@@ -29,6 +38,7 @@
 }
 
 .project{
+	font-weight: 700;
 	margin-top: 1rem;
 	margin-bottom: 1rem;
 }

@@ -18,14 +18,14 @@ html
 
       .container-fluid.h-100
         .row.h-100
-          .col-xs-12.col-md-6.bg-success
+          .col-xs-12.col-md-6
             .card.card-custom
               .card-body
                 h5.card-title.cntr Description
                 img.card-img(src='/icons/question.png', alt='')
                 p.card-text.cntr What this project is for?
                 .cntr
-                  a.btn.btn-primary(href='#') Explore
+                  a.btn.btn-warning(href='#') Explore
             
             .card.card-custom
               .card-body
@@ -33,17 +33,17 @@ html
                 img.card-img(src='/icons/issue.png', alt='')
                 p.card-text.cntr Issues maintained
                 .cntr
-                  a.btn.btn-primary(href=`/projects/`+project_id+`/issues`) Explore
+                  a.btn.btn-warning(href=`/projects/`+project_id+`/issues`) Explore
           
 
-          .col-xs-12.col-md-6.bg-danger
+          .col-xs-12.col-md-6
             .card.card-custom
               .card-body
                 h5.card-title.cntr Members
-                img.card-img(src='/icons/team.png', alt='')
+                img.card-img(src='/icons/team.svg', alt='')
                 p.card-text.cntr Collaborators in project
                 .cntr
-                  a.btn.btn-primary(href='/projects/' + project_id + '/members') Explore
+                  a.btn.btn-warning(href='/projects/' + project_id + '/members') Explore
             
             .card.card-custom
               .card-body
@@ -51,4 +51,4 @@ html
                 img.card-img(src='/icons/graph-up.svg', alt='')
                 p.card-text.cntr How much is project completed?
                 .cntr
-                  a.btn.btn-primary(href='#') Explore
+                  a.btn.btn-warning(href='/projects/' + project_id + '/progress') Explore

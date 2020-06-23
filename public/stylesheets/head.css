@@ -2,11 +2,6 @@ body, html{
 	height:100%;
 }
 
-.main{
-	margin-left: 160px;
-	padding: 0px 0px;
-}
-
 .sidenav{
   height: 100%;
   width: 160px;
@@ -61,4 +56,18 @@ hr {
     font-size: 1.5em;
     margin-right: 1.5em;
     font-weight: 600;
+}
+
+#user{
+  font-weight: 600;
+  margin-right: 20px;
+}
+
+#foot{
+  word-spacing: 5px;
+}
+
+#foot img{
+  height: 30px;
+  width: 30px;
 }

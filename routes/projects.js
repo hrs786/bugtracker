@@ -433,4 +433,41 @@ router.delete('/:id/members', secured, Admin, (req,res)=>{
 })
 
 
+router.get('/:id/progress', secured, (req,res)=>{
+	let project_id = req.params.id
+
+	let query1 = `SELECT priority, COUNT(*) AS COUNT FROM issue WHERE project_id= ? GROUP BY priority`
+	let query2 = `SELECT status, COUNT(*) AS COUNT FROM issue WHERE project_id= ? AND status<>3 GROUP BY status`
+
+	connection.query(query1, [project_id], (err1,results1,fields1)=>{
+		if(err1){
+			throw err1
+		}
+
+		let priority_arr = [0, 0, 0, 0]
+		results1.forEach(result=>{
+			let val_prior = result.priority
+			let val = result.COUNT
+			priority_arr[val_prior-1] = val
+		})		
+
+		connection.query(query2, [project_id], (err2,results2,fields2)=>{
+			if(err2){
+				throw err2
+			}
+			
+			let status_arr = [0, 0, 0]
+			results2.forEach(result=>{
+				let val_status = result.status
+				let val = result.COUNT
+				status_arr[val_status-1] = val
+			})	
+			
+
+			res.render('progress',{ priority_arr: priority_arr, status_arr: status_arr, foo: true})
+		})
+	})
+})
+
+
 module.exports = router

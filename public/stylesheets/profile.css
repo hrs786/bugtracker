@@ -1,3 +1,8 @@
+.main{
+	margin-left: 160px;
+	padding: 0px 0px;
+}
+
 .custom{
 	width: 80%;
 	margin-left: 10%;
@@ -32,6 +37,7 @@ input[type=file]{
 }
 
 .detail div{
+	font-size: 1.5rem;
 	margin-top: 1.5rem;
 	font-weight: 600;
 }

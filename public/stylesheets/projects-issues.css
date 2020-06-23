@@ -1,3 +1,8 @@
+.main{
+	margin-left: 160px;
+	padding: 0px 0px;
+}
+
 .card-custom{
 	width:60%;
 	margin-right: 20%;
@@ -18,7 +23,16 @@
 	text-align: center;
 }
 
+.card-custom{
+	background-color: #e2d810;
+}
+
+.card-body h5{
+	font-weight: 600;
+}
+
 .project{
+	font-weight: 700;
 	margin-top: 1rem;
 	margin-bottom: 1rem;
 }
