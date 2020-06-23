@@ -1,5 +1,5 @@
 .form{
-	height:100%;
+    margin-bottom: 8rem;
 	margin-left: 160px;
 }
 
@@ -27,6 +27,17 @@
 	margin:0 auto;
 }
 
-input[type=file]{
-	display: block;
+.form-group{
+    margin-left: 35%;
+    margin-right: 35%;
+}
+
+.project{
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+.project div{
+	font-size: 2rem;
+	text-align: center;
 }

@@ -1,0 +1,38 @@
+doctype html
+html
+  head
+    title
+    title Create Issue
+    link(rel='stylesheet', type='text/css', href='/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/head.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/create-issue.css')
+
+  
+  body
+    include includes/head.pug
+    
+    .form
+      form(method='POST', action=`/issues/`+issue_id+`?_method=PUT`)
+        .custom-header
+          | Edit Issue
+        .text-center= 'Project ID: ' + project_id
+        .form-group
+          label(for='head-usr') Assigned TO
+          div
+            input#headId(list='available-usernames', name='usr', autocomplete="off", value=issue_info.assigned_to)
+            datalist#available-usernames
+              -for(var i=0; i<users.length; i++)
+                option(value=users[i].username)
+        .form-group
+          label(for='priority') Issue Priority
+          select.form-control(name='priority')
+            option(value=1, selected= issue_info.priority==1) Minor
+            option(value=2, selected= issue_info.priority==2) Normal
+            option(value=3, selected= issue_info.priority==3) Major
+            option(value=4, selected= issue_info.priority==4) Critical
+        .form-group
+          label(for='summary')
+            | Summary 
+            small.text-muted (max 200 characters)
+          textarea.form-control(name='summary', rows='3', maxlength='200', title='maximum 200 characters', placeholder='summary', required)= issue_info.summary
+        button.btn.btn-primary(type='submit') Submit

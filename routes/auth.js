@@ -64,7 +64,7 @@ router.get("/callback", (req, res, next) => {
         
 
         api(optionsEndPoint).then(body=>{
-            let data = JSON.parse(body)
+            let data = JSON.parse(body)            
             
             let chk = data.logins_count
             

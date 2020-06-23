@@ -1,0 +1,61 @@
+.card-custom{
+	width:50%;
+	margin-right: 25%;
+	margin-left: 25%;
+	margin-top:1.5rem;
+	margin-bottom:1.5rem;
+}
+
+.header-custom{
+	background-color: #56baed;
+	font-size: 1.8em;
+	font-weight: 700;
+}
+
+.data-table{
+	width:100%;
+	border-collapse:collapse;
+}
+
+.data-table th,.data-table td{
+	border-right:2px solid black;
+	border-left:2px solid black;
+	padding:5px;
+}
+
+.data-table thead tr{
+	background-color: gray;
+}
+
+.data-table tbody tr:nth-child(even){
+	background-color: #f2f2f2;
+}
+
+.zero-pad{
+	padding:0px;
+}
+
+
+.data-table th, .data-table td{
+	text-align:center;
+}
+
+.upd-mem{
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+.upd-mem .btn{
+	margin-left: 45%;
+	margin-right: 45%
+}
+
+.project{
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+.project div{
+	font-size: 2rem;
+	text-align: center;
+}

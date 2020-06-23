@@ -1,8 +1,8 @@
 const express = require('express')
 const secured = require('../lib/middleware/secured')
+const connection = require('../db.js')
 
 const router = express.Router()
-
 
 router.get('/',(req,res)=>{
 	res.send("Home")
@@ -13,13 +13,10 @@ router.get('/about',(req,res)=>{
 })
 
 router.get('/dashboard', secured, (req, res, next) => {
-	const { _raw, _json, ...userProfile } = req.user;
-	//console.log(userProfile);
-	
-	res.render('dashboard', {
-		title: 'Profile',
-		userProfile: userProfile
-	});
+	let query = ""
+	connection.query(query, (err,result,fields)=>{
+		res.render('dashboard');
+	})	
 });
 
 router.get('/progress', secured, (req,res)=>{

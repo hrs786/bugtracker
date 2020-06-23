@@ -4,46 +4,11 @@ html
     title
     title Create Issue
     link(rel='stylesheet', type='text/css', href='/bootstrap/css/bootstrap.min.css')
-    link(rel='stylesheet', type='text/css', href='/stylesheets/navbar-dashboard.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/head.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/create-issue.css')
 
   body
-    nav.navbar.navbar-expand-lg.navbar-custom.py-2
-      a.navbar-brand.text-white(href='/')
-        img.d-inline-block.align-center(src='/icons/bug.png', width='64', height='64', alt='')
-        | 	  	BugTracker
-      button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarNavAltMarkup', aria-controls='navbarNavAltMarkup', aria-expanded='false', aria-label='Toggle navigation')
-        span.navbar-toggler-icon
-      #navbarNavAltMarkup.collapse.navbar-collapse.justify-content-end
-        .navbar-nav
-          a.nav-item.nav-link.text-white.nit-custom(href='/logout')
-            | Logout 
-            span.sr-only (current)
-    
-    .sidenav.clr-side
-      .clr-side-hvr
-        a(href='/dashboard')
-          img.align-center(src='/icons/house-fill.svg', width='24', height='24', alt='')
-          br
-          | 				Home
-      hr
-      .clr-side-hvr
-        a(href='/issues')
-          img.align-center(src='/icons/file-ruled.svg', width='24', height='24', alt='')
-          br
-          | 				Issues
-      hr
-      .clr-side-hvr
-        a(href='/projects')
-          img.align-center(src='/icons/grid.svg', width='24', height='24', alt='')
-          br
-          | 				Projects
-        hr
-      .clr-side-hvr
-        a(href='/progress')
-          img.align-center(src='/icons/graph-up.svg', width='24', height='24', alt='')
-          br
-          | 				Progress
+    include includes/head.pug
     
     .form
       form(action='/projects', method='POST')

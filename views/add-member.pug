@@ -1,0 +1,39 @@
+doctype html
+html
+  head
+    title Update Members
+    link(rel='stylesheet', type='text/css', href='/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/head.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/update-members.css')
+
+  body
+    include includes/head.pug
+
+    .project
+        div= 'Project - ' + project_name + ' ( id: ' + project_id + ')'
+    
+    .form
+      form(action='/projects/' + project_id + '/members', method='POST')
+        .custom-header
+          | Add Member
+        .form-group
+          label(for='head-usr') Username
+          div
+            input(list='available-usernames', name='usr', required, autocomplete="off", value=headUsername)
+            datalist#available-usernames
+              -for(var i=0; i<users.length; i++)
+                option(value=users[i].username)
+        button.btn.btn-primary(type='submit') Submit
+
+    .form
+      form(action='/projects/' + project_id + '/members?_method=DELETE', method='POST')
+        .custom-header
+          | Remove Member
+        .form-group
+          label(for='head-usr') Username
+          div
+            input(list='available-usernames', name='usr', required, autocomplete="off", value=headUsername)
+            datalist#available-usernames
+              -for(var i=0; i<users.length; i++)
+                option(value=users[i].username)
+        button.btn.btn-primary(type='submit') Submit

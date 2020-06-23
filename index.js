@@ -101,7 +101,7 @@ passport.deserializeUser((user, done) => {
 
 
 // isAuthenticated
-app.use(checkAuth)
+app.use(checkAuth)	
 // isAdmin
 app.use(checkAdmin)
 

@@ -1,0 +1,47 @@
+doctype html
+html
+  head
+    title Members
+    link(rel='stylesheet', type='text/css', href='/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/head.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/members.css')
+
+    script(type='text/javascript').
+      document.getElementById('search')
+        .addEventListener('keyup', function(event) {
+          if (event.code === 'Enter') {
+            event.preventDefault();
+            document.querySelector('form').submit();
+          }
+        });
+  
+
+  body
+    include includes/head.pug
+    
+    
+    .main.h-100
+      
+      .project
+        div= 'Project - ' + project_name + ' ( id: ' + project_id + ')'
+
+      -if(isAuthenticated && isAdmin)
+        .upd-mem
+          a.btn.btn-warning(href='/projects/' + project_id + '/members/edit') Update Members
+
+      .container-fluid.h-100
+        .row.h-100
+          .col-xs-12.col-md-12.bg-success
+            .card.card-custom
+              .card-header.header-custom
+                img.align-center(src='/icons/list-ul.svg', width='30', height='30', alt='')
+                | 					    		Members
+              .card-body.zero-pad
+                table.data-table
+                  thead
+                    tr
+                      th Username
+                  tbody 
+                    each member in members
+                      tr
+                        td= member.username

@@ -137,3 +137,13 @@ hr {
 	color: #ffef00;
 	text-decoration: none;
 }
+
+.project{
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+.project div{
+	font-size: 2rem;
+	text-align: center;
+}
