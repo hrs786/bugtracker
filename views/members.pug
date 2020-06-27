@@ -2,6 +2,7 @@ doctype html
 html
   head
     title Members
+    link(rel="icon", href="/icons/bug.png")
     link(rel='stylesheet', type='text/css', href='/bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/head.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/members.css')
@@ -31,7 +32,7 @@ html
 
       .container-fluid.h-100
         .row.h-100
-          .col-xs-12.col-md-12.bg-success
+          .col-xs-12.col-md-12
             .card.card-custom
               .card-header.header-custom
                 img.align-center(src='/icons/list-ul.svg', width='30', height='30', alt='')
@@ -45,3 +46,5 @@ html
                     each member in members
                       tr
                         td= member.username
+
+    include includes/footer.pug

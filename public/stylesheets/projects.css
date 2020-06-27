@@ -10,6 +10,7 @@
 	margin-left: 20%;
 	margin-top: 3rem;
 	margin-bottom: 3rem;
+	border-width: 0px; 
 }
 
 .card-img{
@@ -50,7 +51,7 @@
 .card-body{
 	border: none;
 	border-radius: 20px;
-	background-color: #8a2be2;
+	background-color: #35383F;
 	color: white;
 }
 

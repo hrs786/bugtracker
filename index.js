@@ -8,6 +8,7 @@ const path = require("path");
 const expressSession = require("express-session");
 const passport = require("passport");
 const Auth0Strategy = require("passport-auth0");
+const flash = require("connect-flash")
 
 require("dotenv").config();
 
@@ -87,6 +88,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(expressSession(session));
 
+app.use(flash())
+
 passport.use(strategy);
 app.use(passport.initialize());
 app.use(passport.session());
@@ -104,6 +107,13 @@ passport.deserializeUser((user, done) => {
 app.use(checkAuth)	
 // isAdmin
 app.use(checkAdmin)
+
+app.use((req,res,next)=>{
+	res.locals.error = req.flash("error")
+	res.locals.success = req.flash("success")
+
+	next()
+})
 
 // Router mounting
 app.use("/",authRouter)

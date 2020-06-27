@@ -119,7 +119,7 @@ router.get("/logout", (req, res) => {
         returnTo: returnTo
     });
     logoutURL.search = searchString;
-  
+    
     res.redirect(logoutURL);
 });
 

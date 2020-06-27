@@ -2,7 +2,8 @@ doctype html
 html
   head
     title
-    title Create Issue
+    title Edit Project
+    link(rel="icon", href="/icons/bug.png")
     link(rel='stylesheet', type='text/css', href='/bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/head.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/create-issue.css')
@@ -14,6 +15,7 @@ html
       form(action='/projects/' + project_id + '?_method=PUT', method='POST')
         .custom-header
           | Edit Project
+        .text-center= "Project ID: " + project_id
         .form-group
           label(for='projectName') Name of Project
           input.form-control(type='text', placeholder='Enter project name', name="projectName", value=detail.name, required)
@@ -41,3 +43,5 @@ html
           label(for='end-date')  End date 
           input(type='date', name="endDate", value=end_date)
         button.btn.btn-primary(type='submit') Submit
+    
+    include includes/footer.pug

@@ -2,6 +2,7 @@ doctype html
 html
   head
     title Issues
+    link(rel="icon", href="/icons/bug.png")
     link(rel='stylesheet', type='text/css', href='/bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/head.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/issues.css')
@@ -57,3 +58,5 @@ html
                         td= issue.status
                         td= issue.priority
                         td= issue.summary
+
+    include includes/footer.pug

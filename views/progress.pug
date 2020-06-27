@@ -14,11 +14,16 @@ html
     include includes/head.pug
 
     .main.h-100
-      .container
+      .project
+        div= 'Project - ' + project_name + ' ( id: ' + project_id + ')'
+
+      .contain
         canvas#pieChart1
     
-      .container
+      .contain
         canvas#pieChart2
+    
+    include includes/footer.pug
     
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js')
     script(type='text/javascript', src='/bootstrap/js/jquery-3.5.1.slim.min.js')

@@ -1,7 +1,8 @@
 doctype html
 html
   head
-    title Project
+    title Projects
+    link(rel="icon", href="/icons/bug.png")
     link(rel='stylesheet', type='text/css', href='/bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/head.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/projects.css')
@@ -55,3 +56,5 @@ html
                     -if(isAuthenticated && isAdmin)
                       a.btn.btn-primary(href=`/projects/` + projects[i].projectId + '/edit') Edit
             -}
+
+    include includes/footer.pug

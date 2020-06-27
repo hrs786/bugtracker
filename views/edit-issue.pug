@@ -2,7 +2,8 @@ doctype html
 html
   head
     title
-    title Create Issue
+    title Edit Issue
+    link(rel="icon", href="/icons/bug.png")
     link(rel='stylesheet', type='text/css', href='/bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/head.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/create-issue.css')
@@ -16,6 +17,7 @@ html
         .custom-header
           | Edit Issue
         .text-center= 'Project ID: ' + project_id
+        .text-center= "Issue ID: " + issue_id
         .form-group
           label(for='head-usr') Assigned TO
           div
@@ -36,3 +38,5 @@ html
             small.text-muted (max 200 characters)
           textarea.form-control(name='summary', rows='3', maxlength='200', title='maximum 200 characters', placeholder='summary', required)= issue_info.summary
         button.btn.btn-primary(type='submit') Submit
+
+    include includes/footer.pug

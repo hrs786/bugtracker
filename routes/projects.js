@@ -66,10 +66,12 @@ router.get('/', secured, (req,res)=>{
 	
 	connection.query(query,(err,result,fields)=>{	
 		if(err){
-			throw err
-		}	
-		let project_status = status_map[result[0].status]
-		res.render('projects',{projects:result, project_status: project_status})
+			req.flash("error", "Server error")
+			res.redirect("/dashboard")
+		} else{
+			let project_status = status_map[result[0].status]
+			res.render('projects',{projects:result, project_status: project_status})
+		}
 	})
 })
 
@@ -82,22 +84,25 @@ router.post('/', secured, Admin, (req,res)=>{
 
 	let headId;
 	let q = `SELECT id FROM people_info WHERE username= ?`
-	connection.query(q, [headUsr], (err,result,fields)=>{
-		if(err){
-			throw err
+	connection.query(q, [headUsr], (err1,result,fields)=>{
+		if(err1 || result.length===0){
+			req.flash("error", "No such Head User exist")
+			res.redirect("/projects")
+		} else{			
+			headId = result[0].id
+
+			let arr = [projectName, headId, date, expDate, summary]
+			let query = `INSERT INTO project(name,head_id,start_date,exp_end_date,summary) values( ?, ?, ?, ?, ?)`
+			connection.query(query, arr,(err2, result, fields)=>{
+				if(err2){
+					req.flash("error", "Project couldn't be created, please try again")
+					res.redirect("/projects")
+				} else{
+					req.flash("success", "Project created successfuly")
+					res.redirect('/projects')
+				}
+			})
 		}
-
-		headId = result[0].id
-
-		let arr = [projectName, headId, date, expDate, summary]
-		let query = `INSERT INTO project(name,head_id,start_date,exp_end_date,summary) values( ?, ?, ?, ?, ?)`
-		connection.query(query, arr,(err, result, fields)=>{
-			if(err){
-				throw err
-			}
-
-			res.redirect('/projects')
-		})
 		
 	})
 	
@@ -107,10 +112,11 @@ router.get('/new', secured, Admin, (req,res)=>{
 	let query = `SELECT username FROM people_info`
 	connection.query(query, (err, result, fields)=>{
 		if(err){
-			throw err
-		}
-		
-		res.render('create-project',{ users: result})
+			req.flash("error", "Server error")
+			res.redirect("/projects")
+		} else{
+			res.render('create-project',{ users: result})
+		}		
 	})
 })
 
@@ -118,19 +124,21 @@ router.get('/new', secured, Admin, (req,res)=>{
 // Project
 router.get('/:id', secured,(req,res)=>{		
 	let project_id=req.params.id
-	let query = `SELECT name FROM project WHERE id= ?`
+	let query = `SELECT * FROM project WHERE id= ?`
 
 	connection.query(query, [project_id], (err,result,fields)=>{
-		if(err){
-			throw err
+		if( err || result.length===0 ){
+			req.flash("error", "No such project exist")
+			res.redirect("/projects")
+		} else{			
+			let project_name = result[0].name	
+			res.render('projects-options',{project_id:project_id, project_name: project_name});
 		}
-		let project_name = result[0].name
-		
-		res.render('projects-options',{project_id:project_id, project_name: project_name});
 	})
 })
 
 router.put('/:id', secured, Admin, (req,res)=>{	
+	let project_id = req.params.id
 	let status_map = {
 		"NEW": 1,
 		"OPEN": 2,
@@ -152,61 +160,69 @@ router.put('/:id', secured, Admin, (req,res)=>{
 	let query1 = `SELECT id FROM people_info WHERE username=?`
 	let query2 = `UPDATE project SET name=?, head_id=?, summary=?, status=?, end_date=? WHERE id=?`
 	connection.query(query1, [arr[1]], (err1,result1,fields1)=>{
-		if(err1){
-			throw err1
+		if( err1 || result1.length===0 ){
+			req.flash("error", "No such Head User exist")
+			res.redirect("/projects/" + project_id)
 		}
-		arr[1] = result1[0].id
+		else{
+			arr[1] = result1[0].id
 
-		connection.query(query2, arr, (err2,result2,fields2)=>{
-			if(err2){
-				throw err2
-			}
-
-			res.redirect('/projects/' + req.params.id + '/edit') //change
-		})
+			connection.query(query2, arr, (err2,result2,fields2)=>{
+				if(err2){
+					req.flash("error", "Project couldn't be updated")
+					res.redirect("/projects")
+				} else{
+					req.flash("success", "Project updated successfuly")
+					res.redirect('/projects/' + req.params.id) // redirect to description page
+				}
+			})
+		}
 	})
 })
 
 router.get('/:id/edit', secured, Admin, (req,res)=>{
+	let project_id = req.params.id
 
 	let query = `SELECT * FROM project WHERE id=?`
 	let query2 = `SELECT username FROM people_info`
 	let query3 =`SELECT username FROM people_info WHERE id=?`
 	connection.query(query, [req.params.id], (err1,result1,fields1)=>{
-		if(err1){
-			throw err1
-		}
-
-		let head_id = result1[0].head_id
-		connection.query(query2, (err2,result2,fields2)=>{
-			if(err2){
-				throw err2
-			}
-			
-			connection.query(query3, [head_id], (err3,result3,fields3)=>{
-				if(err3){
-					throw err3
+		if( err1 || result1.length===0 ){
+			req.flash("error", "No such project exist")
+			res.redirect("/projects")
+		} else{
+			let head_id = result1[0].head_id
+			connection.query(query2, (err2,result2,fields2)=>{
+				if(err2){
+					req.flash("error", "Server error")
+					res.redirect("/projects/" + project_id)
+				} else{
+					connection.query(query3, [head_id], (err3,result3,fields3)=>{
+						if( err3 || result3.length===0 ){
+							req.flash("error", "Server error")
+							res.redirect("/projects/" + project_id)
+						} else{
+							// get date in yyyy-mm-dd for pug(html)
+							let end_date = result1[0].end_date
+							if(end_date){
+								let dd = end_date.getDate()
+								let mm = end_date.getMonth() + 1
+								let yyyy = end_date.getFullYear()
+								if (dd < 10) { 
+									dd = '0' + dd; 
+								} 
+								if (mm < 10) { 
+									mm = '0' + mm; 
+								}
+								end_date = yyyy.toString() + '-' + mm.toString() + '-' + dd.toString()		
+							}		
+							
+							res.render('edit-project',{ detail: result1[0], users: result2, headUsername: result3[0].username, project_id: req.params.id, end_date: end_date})
+						}
+					})
 				}
-
-				// get date in yyyy-mm-dd for pug(html)
-				let end_date = result1[0].end_date
-				if(end_date){
-					let dd = end_date.getDate()
-					let mm = end_date.getMonth() + 1
-					let yyyy = end_date.getFullYear()
-					if (dd < 10) { 
-						dd = '0' + dd; 
-					} 
-					if (mm < 10) { 
-						mm = '0' + mm; 
-					}
-					end_date = yyyy.toString() + '-' + mm.toString() + '-' + dd.toString()		
-				}		
-				
-				
-				res.render('edit-project',{ detail: result1[0], users: result2, headUsername: result3[0].username, project_id: req.params.id, end_date: end_date})
 			})
-		})
+		}
 	})
 })
 
@@ -215,12 +231,13 @@ router.get('/:id/issues', secured, (req,res)=>{
 	let query = `SELECT name FROM project WHERE id= ?`
 
 	connection.query(query, [project_id], (err,result,fields)=>{
-		if(err){
-			throw err
+		if( err || result.length===0 ){
+			req.flash("error", "No such project exist")
+			res.redirect("/projects")
+		} else{
+			let project_name = result[0].name
+			res.render('projects-issues',{project_id:project_id, project_name: project_name});
 		}
-		let project_name = result[0].name
-		
-		res.render('projects-issues',{project_id:project_id, project_name: project_name});
 	})
 })
 
@@ -231,22 +248,25 @@ router.get('/:id/issues/unassigned', secured, (req,res)=>{
 	let query2 = `SELECT BIN_TO_UUID(id) AS id,status,priority,summary FROM issue WHERE status = ? AND project_id = ? ORDER BY open_date DESC`
 	
 	connection.query(query1, [project_id],(err1,result1,fields1)=>{
-		if(err1){
-			throw err1
-		}
-		let project_name = result1[0].name
-		connection.query(query2, arr, (err2,results2,fields2)=>{
-			if(err2){
-				throw err2
-			}
-
-			results2.forEach((result)=>{
-				result.status = issue_status[result.status]
-				result.priority = issue_priority[result.priority]
+		if( err1 || result1.length===0 ){
+			req.flash("error", "No such project exist")
+			res.redirect("/projects/" + project_id)
+		} else{
+			let project_name = result1[0].name
+			connection.query(query2, arr, (err2,results2,fields2)=>{
+				if(err2){
+					req.flash("error", "Server error")
+					res.redirect("/projects/" + project_id + "/issues")
+				} else{
+					results2.forEach((result)=>{
+						result.status = issue_status[result.status]
+						result.priority = issue_priority[result.priority]
+					})
+	
+					res.render('issues',{issues:results2, srch: false, project_name: project_name, project_id: project_id})
+				}
 			})
-
-			res.render('issues',{issues:results2, srch: false, project_name: project_name, project_id: project_id})
-		})
+		}
 	})
 })
 
@@ -267,13 +287,14 @@ router.post('/:id/issues/unassigned', secured, upload.single('info'),(req,res)=>
 	let data = [issue_id, req.body.summary, person_id, date, Number(req.body.priority), Number(req.params.id), description]
 	let query = `INSERT INTO issue (id, summary, opened_by, open_date, priority, project_id, description) values (UUID_TO_BIN(?), ?, ?, ?, ?, ?, ?)`
 	
-	let q = connection.query(query, data,(err,result,fields)=>{
-		//console.log(q.sql) -> to see actual query as in db
-		
-		if(err)
-			throw err
-		
-		res.redirect('/projects/' + req.params.id + '/issues/unassigned')
+	connection.query(query, data,(err,result,fields)=>{		
+		if(err){
+			req.flash("error", "Issue couldn't be created")
+			res.redirect("/projects/" + project_id + "/issues")
+		} else{
+			req.flash("success", "Issue created successfuly")
+			res.redirect('/projects/' + req.params.id + '/issues/unassigned')
+		}
 	})
 })
 
@@ -284,22 +305,25 @@ router.get('/:id/issues/open', secured, (req,res)=>{
 	let query2 = `SELECT BIN_TO_UUID(id) AS id,status,priority,summary FROM issue WHERE status = ? AND project_id = ? ORDER BY open_date DESC`
 
 	connection.query(query1, [project_id],(err1,result1,fields1)=>{
-		if(err1){
-			throw err1
-		}
-		let project_name = result1[0].name
-		connection.query(query2, arr, (err2,results2,fields2)=>{
-			if(err2){
-				throw err2
-			}
-
-			results2.forEach((result)=>{
-				result.status = issue_status[result.status]
-				result.priority = issue_priority[result.priority]
+		if( err1 || result1.length===0 ){
+			req.flash("error", "No such project exist")
+			res.redirect("/projects")
+		} else{
+			let project_name = result1[0].name
+			connection.query(query2, arr, (err2,results2,fields2)=>{
+				if(err2){
+					req.flash("error", "Server error")
+					res.redirect("/projects/" + project_id + "/issues")
+				} else{
+					results2.forEach((result)=>{
+						result.status = issue_status[result.status]
+						result.priority = issue_priority[result.priority]
+					})
+	
+					res.render('issues',{issues:results2, srch: false, project_name: project_name, project_id: project_id})
+				}
 			})
-
-			res.render('issues',{issues:results2, srch: false, project_name: project_name, project_id: project_id})
-		})
+		}
 	})
 })
 
@@ -310,21 +334,24 @@ router.get('/:id/issues/resolved', secured, (req,res)=>{
 	let query2 = `SELECT BIN_TO_UUID(id) AS id,status,priority,summary FROM issue WHERE status = ? AND project_id = ? ORDER BY open_date DESC`
 	
 	connection.query(query1, [project_id],(err1,result1,fields1)=>{
-		if(err1){
-			throw err1
-		}
-		let project_name = result1[0].name
-		connection.query(query2, arr, (err2,results2,fields2)=>{
-			if(err2){
-				throw err2
-			}
-
-			results2.forEach((result)=>{
-				result.status = issue_status[result.status]
-				result.priority = issue_priority[result.priority]
+		if( err1 || result1.length===0 ){
+			req.flash("error", "No such project exist")
+			res.redirect("/projects")
+		} else{
+			let project_name = result1[0].name
+			connection.query(query2, arr, (err2,results2,fields2)=>{
+				if(err2){
+					req.flash("error", "Server error")
+					res.redirect("/projects/" + project_id + "/issues")
+				} else{
+					results2.forEach((result)=>{
+						result.status = issue_status[result.status]
+						result.priority = issue_priority[result.priority]
+					})
+					res.render('issues',{issues:results2, srch: false, project_name: project_name, project_id: project_id})
+				}
 			})
-			res.render('issues',{issues:results2, srch: false, project_name: project_name, project_id: project_id})
-		})
+		}
 	})
 })
 
@@ -333,12 +360,13 @@ router.get('/:id/issues/new', secured, (req,res)=>{
 	let query = `SELECT name FROM project WHERE id= ?`
 
 	connection.query(query, [project_id], (err,result,fields)=>{
-		if(err){
-			throw err
+		if( err || result.length===0 ){
+			req.flash("error", "No such project exist")
+			res.redirect("/projects")
+		} else{
+			let project_name = result[0].name
+			res.render('create-issue',{project_id:project_id, project_name: project_name});
 		}
-		let project_name = result[0].name
-		
-		res.render('create-issue',{project_id:project_id, project_name: project_name});
 	})
 })
 
@@ -349,18 +377,21 @@ router.get('/:id/members', secured, (req,res)=>{
 	let query1 = `SELECT name FROM project WHERE id= ?`
 	let query2 = `SELECT username FROM ((SELECT * FROM work WHERE project_id= ?) AS T1 INNER JOIN people_info ON T1.person_id=people_info.id)`
 
-	let q = connection.query(query1, [project_id], (err1,result1,fields1)=>{	
-		if(err1){
-			throw err1
+	connection.query(query1, [project_id], (err1,result1,fields1)=>{	
+		if( err1 || result1.length===0 ){
+			req.flash("error", "No such project exist")
+			res.redirect("/projects")
+		} else{
+			let project_name = result1[0].name
+			connection.query(query2, [project_id], (err2,result2,fields2)=>{
+				if(err2){
+					req.flash("error", "Members couldn't be found, try again later")
+					res.redirect("/projects/" + project_id)
+				} else{
+					res.render('members',{members: result2, project_id: project_id, project_name: project_name})
+				}
+			})
 		}
-		let project_name = result1[0].name
-		connection.query(query2, [project_id], (err2,result2,fields2)=>{
-			if(err2){
-				throw err2
-			}
-
-			res.render('members',{members: result2, project_id: project_id, project_name: project_name})
-		})
 	})
 })
 
@@ -370,17 +401,20 @@ router.get('/:id/members/edit', secured, Admin, (req,res)=>{
 	let query2 = `SELECT username FROM people_info`
 
 	connection.query(query1, [project_id],(err1,result1,fields1)=>{
-		if(err1){
-			throw err1
+		if( err1 || result1.length===0 ){
+			req.flash("error", "No such project exist")
+			res.redirect("/projects")
+		} else{
+			let project_name = result1[0].name
+			connection.query(query2, (err2,result2,fields2)=>{
+				if(err2){
+					req.flash("error", "Server error")
+					res.redirect("/projects/" + project_id + "/members")
+				} else{
+					res.render('add-member',{users: result2, project_id: project_id, project_name: project_name})
+				}
+			})
 		}
-		let project_name = result1[0].name
-		connection.query(query2, (err2,result2,fields2)=>{
-			if(err2){
-				throw err2
-			}
-
-			res.render('add-member',{users: result2, project_id: project_id, project_name: project_name})
-		})
 	})
 })
 
@@ -392,19 +426,25 @@ router.post('/:id/members', secured, Admin, (req,res)=>{
 	let query2 = `INSERT INTO work(person_id,project_id) values(?, ?)`
 
 	connection.query(query1, [username], (err1,result1,fields1)=>{
-		if(err1){
-			throw err1
-		}
-		let member_id = result1[0].id
+		if( err1 || result1.length===0 ){
+			req.flash("error", "No such user exist")
+			res.redirect("/projects/" + project_id)
+		} else{
+			let member_id = result1[0].id
 		
-		connection.query(query2, [member_id, Number(project_id)], (err2,result2,fields2)=>{
-			if(err2){
-				throw err2
-			}
-			// handle duplicate insertion error
-			let mem = '/projects/' + project_id + '/members'			
-			res.redirect(mem)
-		})
+			connection.query(query2, [member_id, Number(project_id)], (err2,result2,fields2)=>{
+				if(err2){
+					req.flash("error", "Member couldn't be added")
+					res.redirect("/projects/" + project_id + "/members")
+				} else{
+					// handle duplicate insertion error
+					let mem = '/projects/' + project_id + '/members'		
+					
+					req.flash("success", "Member added successfuly")
+					res.redirect(mem)
+				}
+			})
+		}
 	})
 })
 
@@ -416,19 +456,25 @@ router.delete('/:id/members', secured, Admin, (req,res)=>{
 	let query2 = `DELETE FROM work WHERE person_id= ? AND project_id= ?`
 
 	connection.query(query1, [username], (err1,result1,fields1)=>{
-		if(err1){
-			throw err1
-		}
-		let member_id = result1[0].id
+		if( err1 || result1.length===0 ){
+			req.flash("error", "No such user exist")
+			res.redirect("/projects/" + project_id + "/members")
+		} else{
+			let member_id = result1[0].id
 		
-		connection.query(query2, [member_id, Number(project_id)], (err2,result2,fields2)=>{
-			if(err2){
-				throw err2
-			}
-			// handle no entry error
-			let mem = '/projects/' + project_id + '/members'			
-			res.redirect(mem)
-		})
+			connection.query(query2, [member_id, Number(project_id)], (err2,result2,fields2)=>{
+				if(err2){
+					req.flash("error", "Member couldn't be deleted")
+					res.redirect("/projects/" + project_id + "/members")
+				} else{
+					// handle no entry error
+					let mem = '/projects/' + project_id + '/members'
+					
+					req.flash("success", "Member deleted successfuly")
+					res.redirect(mem)
+				}
+			})
+		}
 	})
 })
 
@@ -436,38 +482,52 @@ router.delete('/:id/members', secured, Admin, (req,res)=>{
 router.get('/:id/progress', secured, (req,res)=>{
 	let project_id = req.params.id
 
+	let query = `SELECT name FROM project WHERE id= ?`
 	let query1 = `SELECT priority, COUNT(*) AS COUNT FROM issue WHERE project_id= ? GROUP BY priority`
 	let query2 = `SELECT status, COUNT(*) AS COUNT FROM issue WHERE project_id= ? AND status<>3 GROUP BY status`
 
-	connection.query(query1, [project_id], (err1,results1,fields1)=>{
-		if(err1){
-			throw err1
+	connection.query(query, [project_id], (err,results,fields)=>{
+		if( err || results.length===0 ){
+			req.flash("error", "No such project exist")
+			res.redirect("/projects")
+		} else{
+			let project_name = results[0].name
+
+			connection.query(query1, [project_id], (err1,results1,fields1)=>{
+				if(err1){
+					req.flash("error", "Server error")
+					res.redirect("/projects/" + project_id)
+				} else{
+					let priority_arr = [0, 0, 0, 0]
+					results1.forEach(result=>{
+						let val_prior = result.priority
+						let val = result.COUNT
+						priority_arr[val_prior-1] = val
+					})
+		
+					connection.query(query2, [project_id], (err2,results2,fields2)=>{
+						if(err2){
+							req.flash("error", "Server error")
+							res.redirect("/projects/" + project_id)
+						} else{
+							let status_arr = [0, 0, 0]
+							results2.forEach(result=>{
+								let val_status = result.status
+								let val = result.COUNT
+								status_arr[val_status-1] = val
+							})	
+							
+		
+							res.render('progress',{ project_name:project_name, project_id: project_id, priority_arr: priority_arr, status_arr: status_arr, foo: true})
+						}
+					})
+				}
+			})
 		}
-
-		let priority_arr = [0, 0, 0, 0]
-		results1.forEach(result=>{
-			let val_prior = result.priority
-			let val = result.COUNT
-			priority_arr[val_prior-1] = val
-		})		
-
-		connection.query(query2, [project_id], (err2,results2,fields2)=>{
-			if(err2){
-				throw err2
-			}
-			
-			let status_arr = [0, 0, 0]
-			results2.forEach(result=>{
-				let val_status = result.status
-				let val = result.COUNT
-				status_arr[val_status-1] = val
-			})	
-			
-
-			res.render('progress',{ priority_arr: priority_arr, status_arr: status_arr, foo: true})
-		})
 	})
 })
 
 
 module.exports = router
+
+// post, put with invalid id ??

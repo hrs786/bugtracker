@@ -7,7 +7,7 @@
 .info{
 	padding-top: 3rem;
 	height:100%;
-	background-color: #97BC62FF;
+	background-color: #e3e8f1;
 	width: 70%;
 	margin-left: 15%;
 	margin-right: 15%;
@@ -18,14 +18,15 @@
 	font-size: 2em;
 	text-align: center;
 	font-weight: 700;
-	background-color: #2C5F2D;
+	background-color: #56baed;
 	border-radius: 3rem;
 }
 
 .body{
 	margin-top: 3rem;
 	font-size: 1em;
-	width: 100%
+	width: 100%;
+	padding-bottom: 2rem;
 }
 
 .wt{
@@ -60,7 +61,6 @@
 
 .summary{
 	background-color: white;
-	border: 2px solid gray;
 	border-radius: 1rem; 
 	width:80%;
 	margin-left: 10%;
@@ -71,5 +71,6 @@
 #edit{
 	margin-top: 3rem;
 	display:block;
-	width:40%
+	margin-left: 40%;
+	margin-right: 40%;
 }

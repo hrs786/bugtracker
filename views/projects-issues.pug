@@ -1,7 +1,8 @@
 doctype html
 html
   head
-    title Project
+    title Project Issues
+    link(rel="icon", href="/icons/bug.png")
     link(rel='stylesheet', type='text/css', href='/bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/head.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/projects-issues.css')
@@ -27,7 +28,7 @@ html
                 p.card-text.cntr
                   | Faced problem, add new issue
                 .cntr
-                  a.btn.btn-warning(href=`/projects/`+project_id+`/issues/new`) Create
+                  a.btn.btn-primary(href=`/projects/`+project_id+`/issues/new`) Create
             
             .card.card-custom
               img.card-img-top.card-img(src='/icons/assign.png', alt='Card image cap')
@@ -36,7 +37,7 @@ html
                 p.card-text.cntr
                   | Assigned to none yet
                 .cntr
-                  a.btn.btn-warning(href=`/projects/`+project_id+`/issues/unassigned`) Explore
+                  a.btn.btn-primary(href=`/projects/`+project_id+`/issues/unassigned`) Explore
 
           
           .col-xs-12.col-md-6
@@ -47,7 +48,7 @@ html
                 p.card-text.cntr
                   | In progress issues
                 .cntr
-                  a.btn.btn-warning(href=`/projects/`+project_id+`/issues/open`) Explore
+                  a.btn.btn-primary(href=`/projects/`+project_id+`/issues/open`) Explore
             
             .card.card-custom
               img.card-img-top.card-img(src='/icons/resolved.png', alt='Card image cap')
@@ -56,4 +57,6 @@ html
                 p.card-text.cntr
                   | Issues solved already
                 .cntr
-                  a.btn.btn-warning(href=`/projects/`+project_id+`/issues/resolved`) Explore
+                  a.btn.btn-primary(href=`/projects/`+project_id+`/issues/resolved`) Explore
+
+    include includes/footer.pug

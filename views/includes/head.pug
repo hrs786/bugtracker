@@ -37,3 +37,9 @@ nav.navbar.navbar-expand-lg.navbar-custom.py-2
       img.align-center(src='/icons/grid.svg', width='24', height='24', alt='')
       br
       | 				Projects
+
+- if(success && success.length > 0)
+  .message.alert.alert-success(role='alert')= success
+
+- if(error && error.length > 0)
+  .message.alert.alert-danger(role='alert')= error

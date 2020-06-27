@@ -1,7 +1,8 @@
 doctype html
 html
   head
-    title Project
+    title Project Options
+    link(rel="icon", href="/icons/bug.png")
     link(rel='stylesheet', type='text/css', href='/bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/head.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/projects-options.css')
@@ -25,7 +26,7 @@ html
                 img.card-img(src='/icons/question.png', alt='')
                 p.card-text.cntr What this project is for?
                 .cntr
-                  a.btn.btn-warning(href='#') Explore
+                  a.btn.btn-primary(href='#') Explore
             
             .card.card-custom
               .card-body
@@ -33,7 +34,7 @@ html
                 img.card-img(src='/icons/issue.png', alt='')
                 p.card-text.cntr Issues maintained
                 .cntr
-                  a.btn.btn-warning(href=`/projects/`+project_id+`/issues`) Explore
+                  a.btn.btn-primary(href=`/projects/`+project_id+`/issues`) Explore
           
 
           .col-xs-12.col-md-6
@@ -43,7 +44,7 @@ html
                 img.card-img(src='/icons/team.svg', alt='')
                 p.card-text.cntr Collaborators in project
                 .cntr
-                  a.btn.btn-warning(href='/projects/' + project_id + '/members') Explore
+                  a.btn.btn-primary(href='/projects/' + project_id + '/members') Explore
             
             .card.card-custom
               .card-body
@@ -51,4 +52,6 @@ html
                 img.card-img(src='/icons/graph-up.svg', alt='')
                 p.card-text.cntr How much is project completed?
                 .cntr
-                  a.btn.btn-warning(href='/projects/' + project_id + '/progress') Explore
+                  a.btn.btn-primary(href='/projects/' + project_id + '/progress') Explore
+
+    include includes/footer.pug

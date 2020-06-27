@@ -3,8 +3,20 @@
 	padding: 0px 0px;
 }
 
-.container {
+.contain {
     margin-top: 3rem;
     margin-bottom: 2rem;
-    width: 80%;
+	margin-left: 10%;
+	margin-right: 10%;
+}
+
+.project{
+	font-weight: 700;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+.project div{
+	font-size: 2rem;
+	text-align: center;
 }

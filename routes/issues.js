@@ -28,13 +28,18 @@ var issue_priority = {
 router.get('/', secured, (req,res)=>{
 	let query = `SELECT BIN_TO_UUID(id) AS id,status,priority,summary FROM issue ORDER BY open_date DESC`
 	connection.query(query,(err,results,fields)=>{
-		results.forEach((result)=>{
-			result.status = issue_status[result.status]
-			result.priority = issue_priority[result.priority]
-		})
-		
-		
-		res.render('issues',{issues:results, srch: true, notShow: true})
+		if(err){
+			req.flash("error", "Server error")
+			res.redirect("/dashboard")
+		} else{
+			results.forEach((result)=>{
+				result.status = issue_status[result.status]
+				result.priority = issue_priority[result.priority]
+			})
+			
+			
+			res.render('issues',{issues:results, srch: true, notShow: true})
+		}
 	})
 })
 
@@ -50,37 +55,40 @@ router.get('/:id', secured, (req,res)=>{
 	let query1 = `SELECT BIN_TO_UUID(id) AS id,summary,opened_by,open_date,end_date,assigned_to,status,priority,project_id,description FROM issue WHERE id = UUID_TO_BIN(?)`
 	let query2 = `SELECT username from people_info WHERE id= ?`
 	connection.query(query1, issue_id, (err1,results1,fields1)=>{
-		if(err1){
-			throw err1
-		}
-
-		results1.forEach((result)=>{
-			result.status = issue_status[result.status]
-			result.priority = issue_priority[result.priority]
-		})
-		let open_user = results1[0].opened_by
-		let assigned_user = results1[0].assigned_to
-		
-		connection.query(query2, [open_user], (err2,result2,fields2)=>{
-			if(err2){
-				throw err2
-			}
-
-			open_user = result2[0].username
-			connection.query(query2, [assigned_user], (err3,result3,fields3)=>{
-				if(err3){
-					throw err3
-				}
-
-				if(assigned_user){
-					assigned_user = result3[0].username
-				} else{
-					assigned_user = '[NOT ASSIGNED]'
-				}
-
-				res.render('issue-info',{issue: results1, open_user: open_user, assigned_user: assigned_user})
+		if( err1 || results1.length===0 ){
+			req.flash("error", "Issue not found")
+			res.redirect("/issues")
+		} else{
+			results1.forEach((result)=>{
+				result.status = issue_status[result.status]
+				result.priority = issue_priority[result.priority]
 			})
-		})
+			let open_user = results1[0].opened_by
+			let assigned_user = results1[0].assigned_to
+			
+			connection.query(query2, [open_user], (err2,result2,fields2)=>{
+				if(err2){
+					req.flash("error", "Server error")
+					res.redirect("/issues")
+				} else{
+					open_user = result2[0].username
+					connection.query(query2, [assigned_user], (err3,result3,fields3)=>{
+						if(err3){
+							req.flash("error", "Server error")
+							res.redirect("/issues")
+						} else{
+							if(assigned_user){
+								assigned_user = result3[0].username
+							} else{
+								assigned_user = '[NOT ASSIGNED]'
+							}
+			
+							res.render('issue-info',{issue: results1, open_user: open_user, assigned_user: assigned_user})
+						}
+					})
+				}
+			})
+		}
 	})
 })
 
@@ -90,24 +98,28 @@ router.put('/:id', secured, (req,res)=>{
 	
 	let query1 = `SELECT id FROM people_info WHERE username= ?`
 	let query2 = `UPDATE issue SET summary= ?, priority= ?, assigned_to= ? WHERE id= UUID_TO_BIN(?)`
-
-	connection.query(query1, [username], (err1,result1,fields1)=>{
-		if(err1){
-			throw err1
-		}
-		let usr_id = null
-		if(username){
-			usr_id = result1[0].id
-		}
 		
-		let arr = [req.body.summary, Number(req.body.priority), usr_id, issue_id]
-		connection.query(query2, arr, (err2,result2,fields2)=>{
-			if(err2){
-				throw err2
+	connection.query(query1, [username], (err1,result1,fields1)=>{
+		if( err1 || ( username.length!==0 && result1.length===0) ){
+			req.flash("error", "No such user exist")
+			res.redirect("/issues/" + issue_id)
+		} else{
+			let usr_id = null
+			if(username){
+				usr_id = result1[0].id
 			}
-
-			res.redirect('/issues/' + issue_id)
-		})
+			
+			let arr = [req.body.summary, Number(req.body.priority), usr_id, issue_id]
+			connection.query(query2, arr, (err2,result2,fields2)=>{
+				if(err2){
+					req.flash("error", "Issue couldn't be updated")
+					res.redirect("/issues/" + issue_id)
+				} else{
+					req.flash("success", "Successfuly edited issue")
+					res.redirect('/issues/' + issue_id)
+				}
+			})
+		}
 	})
 })
 
@@ -119,41 +131,47 @@ router.get('/:id/edit', secured, Head, (req,res)=>{
 	let query4 = `SELECT username FROM people_info WHERE id= ?`
 
 	connection.query(query1, [issue_id], (err1,result1,fields1)=>{
-		if(err1){
-			throw err1
-		}
-		let project_id = result1[0].project_id;
+		if( err1 || result1.length===0 ){
+			req.flash("error", "No such issue exist")
+			res.redirect("/issues")
+		} else{
+			let project_id = result1[0].project_id;
 
-		connection.query(query2, [project_id], (err2,result2,fields2)=>{
-			if(err2){
-				throw err2
-			}
-			
-			connection.query(query3, [issue_id], (err3,result3,fields3)=>{
-				if(err3){
-					throw err3
+			connection.query(query2, [project_id], (err2,result2,fields2)=>{
+				if(err2){
+					req.flash("error", "Server error")
+					res.redirect("/issues/" + issue_id)
+				} else{
+					connection.query(query3, [issue_id], (err3,result3,fields3)=>{
+						if(err3){
+							req.flash("error", "Server error")
+							res.redirect("/issues/" + issue_id)
+						} else{
+							let assigned_to = result3[0].assigned_to
+	
+							connection.query(query4, [assigned_to], (err4,result4,fields4)=>{
+								if(err4){
+									req.flash("error", "Server error")
+									res.redirect("/issues/" + issue_id)
+								} else{
+									if(assigned_to){
+										result3[0].assigned_to = result4[0].username
+									} else{
+										result3[0].assigned_to = null
+									}									
+									res.render('edit-issue', { users: result2, issue_id: issue_id, issue_info: result3[0], project_id: project_id})
+								}
+							})
+						}
+					})
 				}
-				let assigned_to = result3[0].assigned_to
-
-				connection.query(query4, [assigned_to], (err4,result4,fields4)=>{
-					if(err4){
-						throw err4
-					}
-
-					if(assigned_to){
-						result3[0].assigned_to = result4[0].username
-					} else{
-						result3[0].assigned_to = null
-					}
-
-					res.render('edit-issue', { users: result2, issue_id: issue_id, issue_info: result3[0], project_id: project_id})
-				})
 			})
-		})
+		}
 	})
 })
 
 router.get('/:id/description', secured ,(req,res)=>{
+	let issue_id = req.params.id
 	let options = {
 		root: __dirname + '/../uploads',
 		headers: {
@@ -162,12 +180,14 @@ router.get('/:id/description', secured ,(req,res)=>{
 	}
 
 	let filename = path.format({
-		base: req.params.id + '.pdf'
+		base: issue_id + '.pdf'
 	})
 	
 	res.sendFile(filename, options, (err)=>{
-		if(err) throw new Error(err)		
-
+		if(err){
+			req.flash("error", "No description for this issue")
+			res.redirect("/issues/" + issue_id)
+		}	
 	})
 
 })
