@@ -14,3 +14,14 @@
     height: 30px;
     width: 30px;
 }
+
+#instruction{
+    padding-top: 2rem;
+    font-size: 1.2rem;
+    width: 30%;
+    margin: auto;
+}
+
+#instruction div{
+    font-weight: 900;
+}

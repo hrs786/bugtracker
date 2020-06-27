@@ -122,5 +122,10 @@ app.use("/profile",profile)
 app.use("/issues",issues)
 app.use("/projects",projects)
 
+// unknown route
+app.get('*', (req,res)=>{
+	res.render('404')
+})
+
 // port listening to requests
 app.listen(port)

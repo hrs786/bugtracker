@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const connection = require('../db')
 const secured = require('../lib/middleware/secured')
 const Head = require('../lib/middleware/Head')
+const chkHead = require('../lib/middleware/isHead')
 const methodOverride = require('method-override')
 
 
@@ -50,7 +51,7 @@ router.get('/search', secured, (req,res)=>{
 	res.redirect(route)
 })
 
-router.get('/:id', secured, (req,res)=>{	
+router.get('/:id', secured, chkHead,(req,res)=>{	
 	let issue_id = [req.params.id]
 	let query1 = `SELECT BIN_TO_UUID(id) AS id,summary,opened_by,open_date,end_date,assigned_to,status,priority,project_id,description FROM issue WHERE id = UUID_TO_BIN(?)`
 	let query2 = `SELECT username from people_info WHERE id= ?`
@@ -92,7 +93,7 @@ router.get('/:id', secured, (req,res)=>{
 	})
 })
 
-router.put('/:id', secured, (req,res)=>{
+router.put('/:id', secured, Head, (req,res)=>{
 	let issue_id = req.params.id
 	let username = req.body.usr
 	
@@ -112,7 +113,7 @@ router.put('/:id', secured, (req,res)=>{
 			let arr = [req.body.summary, Number(req.body.priority), usr_id, issue_id]
 			connection.query(query2, arr, (err2,result2,fields2)=>{
 				if(err2){
-					req.flash("error", "Issue couldn't be updated")
+					req.flash("error", "Couldn't update, member assigned issue is not member of project")
 					res.redirect("/issues/" + issue_id)
 				} else{
 					req.flash("success", "Successfuly edited issue")

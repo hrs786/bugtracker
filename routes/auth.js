@@ -100,7 +100,7 @@ router.get("/callback", (req, res, next) => {
 });
 
 
-router.get("/logout", (req, res) => {
+router.get("/logout", (req, res) => {    
     req.logOut();
 
     let returnTo = req.protocol + "://" + req.hostname;
