@@ -51,7 +51,26 @@ html
             else
               span= '[No description available]'
           
+          - if(isAuthenticated && (isHead || isAdmin || isAssigned))
+            a#mybtn.btn.btn-primary(href='/issues/' + issue[0].id + '/edit') Edit
           - if(isAuthenticated && (isHead || isAdmin))
-            a#edit.btn.btn-primary(href='/issues/' + issue[0].id + '/edit') Edit Issue
+            button#mybtn.btn.btn-danger(type='button', data-toggle='modal', data-target='#exampleModalCenter')= 'Delete'
+
+        // Modal
+        #exampleModalCenter.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalCenterTitle', aria-hidden='true')
+          .modal-dialog.modal-dialog-centered(role='document')
+            .modal-content
+              .modal-header
+                h5#exampleModalLongTitle.modal-title Delete Issue
+                button.close(type='button', data-dismiss='modal', aria-label='Close')
+                  span(aria-hidden='true') ×
+              .modal-body= "Are you sure you want to delete this issue and all related data"
+              .modal-footer
+                button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                form#confirmForm(action='/issues/' + issue[0].id + '?_method=DELETE', method='POST')
+                  button.btn.btn-danger(type='submit') Confirm
 
     include includes/footer.pug
+
+  script(type='text/javascript', src='/bootstrap/js/jquery-3.5.1.slim.min.js')
+  script(type='text/javascript', src='/bootstrap/js/bootstrap.bundle.min.js')

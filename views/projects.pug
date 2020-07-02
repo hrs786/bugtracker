@@ -7,7 +7,7 @@ html
     link(rel='stylesheet', type='text/css', href='/stylesheets/head.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/projects.css')
 
-  
+
   body
     include includes/head.pug
     
@@ -30,12 +30,15 @@ html
                   .details
                     div(title='Project ID')= 'ID: ' + projects[i].projectId
                     div(title='Project Head ID')= 'Head: ' + projects[i].username
-                  div.cntr(title='Project Status')= 'Status: ' + project_status
+                  div#status.cntr(title='Project Status')= 'Status: ' + project_status
                   p.card-text.cntr= projects[i].summary
                   .cntr
                     a.btn.btn-primary(href=`/projects/` + projects[i].projectId) Explore
                     -if(isAuthenticated && isAdmin)
                       a.btn.btn-primary(href=`/projects/` + projects[i].projectId + '/edit') Edit
+                    -if(isAuthenticated && isAdmin)
+                      button.btn.btn-danger(type='button', data-toggle='modal', data-target='#exampleModalCenter', data-projectName=projects[i].name, data-project=projects[i].projectId)= 'Delete'
+
             -}
             
 
@@ -49,12 +52,43 @@ html
                   .details
                     div(title='Project ID')= 'ID: ' + projects[i].projectId
                     div(title='Project Head ID')= 'Head: ' + projects[i].username
-                  div.cntr(title='Project Status')= 'Status: ' + project_status
+                  div#status.cntr(title='Project Status')= 'Status: ' + project_status
                   p.card-text.cntr= projects[i].summary
                   .cntr
                     a.btn.btn-primary(href=`/projects/`+projects[i].projectId) Explore
                     -if(isAuthenticated && isAdmin)
                       a.btn.btn-primary(href=`/projects/` + projects[i].projectId + '/edit') Edit
+                    -if(isAuthenticated && isAdmin)
+                      button.btn.btn-danger(type='button', data-toggle='modal', data-target='#exampleModalCenter', data-projectName=projects[i].name, data-project=projects[i].projectId)= 'Delete'
             -}
+          
+          
+          // Modal
+          #exampleModalCenter.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalCenterTitle', aria-hidden='true')
+            .modal-dialog.modal-dialog-centered(role='document')
+              .modal-content
+                .modal-header
+                  h5#exampleModalLongTitle.modal-title Delete Project
+                  button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') ×
+                .modal-body 
+                .modal-footer
+                  button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                  form#confirmForm(action='#', method='POST')
+                    button.btn.btn-danger(type='submit') Confirm
+
 
     include includes/footer.pug
+
+
+  script(type='text/javascript', src='/bootstrap/js/jquery-3.5.1.slim.min.js')
+  script(type='text/javascript', src='/bootstrap/js/bootstrap.bundle.min.js')
+  script.
+    $('#exampleModalCenter').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var name = button.data('projectname')
+      var projectTarget = button.data('project') //  Extract info from data-* attributes
+      var modal = $(this)
+      modal.find('.modal-body').text('Are you sure you want to delete project "' + name + '" and all related data')
+      $('#confirmForm').attr("action",'/projects/' + projectTarget + '?_method=DELETE')
+    })

@@ -40,6 +40,14 @@ const upload = multer({
 })
 
 // MAPS
+var project_status = {
+	1: 'NEW',
+	2: 'OPEN',
+	3: 'IN PROGRESS',
+	4: 'COMPLETED',
+	5: 'ON HOLD'
+}
+
 var issue_status = {
 	1: 'UNASSIGNED',
 	2: 'OPEN',
@@ -69,7 +77,10 @@ router.get('/', secured, (req,res)=>{
 			req.flash("error", "Server error")
 			res.redirect("/dashboard")
 		} else{
-			let project_status = status_map[result[0].status]
+			let project_status
+			if(result.length>0){
+				project_status = status_map[result[0].status]
+			}
 			res.render('projects',{projects:result, project_status: project_status})
 		}
 	})
@@ -180,6 +191,38 @@ router.put('/:id', secured, Admin, (req,res)=>{
 	})
 })
 
+router.delete('/:id', secured, Admin, (req,res)=>{	
+	let project_id = req.params.id
+
+	let query1 = `DELETE FROM issue WHERE project_id= ?`
+	let query2 = `DELETE FROM work WHERE project_id= ?`;
+	let query3 = `DELETE FROM project WHERE id= ?`
+	connection.query(query1, [project_id], (err1,result1,fields1)=>{
+		if(err1){
+			req.flash("error", "Project couldn't be deleted, try again")
+			res.redirect("/projects")
+		} else{
+			connection.query(query2, [project_id], (err2,result2,fields2)=>{
+				if(err2){
+					req.flash("error", "All project data couldn't be deleted, try again")
+					res.redirect("/projects")
+				} else{
+					connection.query(query3, [project_id], (err3,result3,field3)=>{
+						if(err3){
+							req.flash("error", "All project data couldn't be deleted, try again")
+							res.redirect("/projects")
+						} else{
+							req.flash("success", "Project deleted successfuly")
+							res.redirect("/projects")
+						}
+					})
+				}
+			})
+		}
+	})
+
+})
+
 router.get('/:id/edit', secured, Admin, (req,res)=>{
 	let project_id = req.params.id
 
@@ -220,6 +263,31 @@ router.get('/:id/edit', secured, Admin, (req,res)=>{
 							res.render('edit-project',{ detail: result1[0], users: result2, headUsername: result3[0].username, project_id: req.params.id, end_date: end_date})
 						}
 					})
+				}
+			})
+		}
+	})
+})
+
+router.get('/:id/description', secured, (req,res)=>{
+	let project_id = req.params.id
+
+	let query = `SELECT * FROM project WHERE id= ?`
+	let query1 = `SELECT username FROM people_info WHERE id= ?`
+	connection.query(query, [project_id], (err,result,fields)=>{
+		if(err || result.length === 0){
+			req.flash("error", "No such project")
+			res.redirect("/projects")
+		} else{
+			result[0].status = project_status[result[0].status]
+			let head_id = result[0].head_id
+			connection.query(query1, [head_id], (err1,result1,fields1)=>{
+				if(err1){
+					req.flash("error", "Server error")
+					res.redirect("/projects/" + project_id)
+				} else{
+					let head = result1[0].username
+					res.render('project-info', {project: result[0], head: head})
 				}
 			})
 		}

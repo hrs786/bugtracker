@@ -39,6 +39,14 @@
 	float:right;
 }
 
+@media screen and (max-width: 1200px)   {
+    .details div:nth-of-type(1), .details div:nth-of-type(2){
+        width:100%;   
+		float:none;
+		text-align: center;
+    }    
+}
+
 .card-body p{
 	margin: 0.8em 0em;
 }
@@ -49,6 +57,7 @@
 }
 
 .card-body{
+	font-size: 1rem;
 	border: none;
 	border-radius: 20px;
 	background-color: #35383F;
@@ -57,6 +66,7 @@
 
 .card .btn{
 	margin-right: 10px;
+	margin-top: 0.5rem;
 }
 
 .new-prj{
@@ -65,7 +75,11 @@
 }
 
 .new-prj .btn{
-	font-size: 1.5rem;
+	font-size: 1.2rem;
 	margin-left: 45%;
 	margin-right: 45%
+}
+
+#status{
+	margin-top: 1.5rem;
 }

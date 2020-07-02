@@ -5,6 +5,8 @@ const connection = require('../db')
 const secured = require('../lib/middleware/secured')
 const Head = require('../lib/middleware/Head')
 const chkHead = require('../lib/middleware/isHead')
+const Assigned = require('../lib/middleware/Assigned')
+const chkAssigned = require('../lib/middleware/isAssigned')
 const methodOverride = require('method-override')
 
 
@@ -51,7 +53,7 @@ router.get('/search', secured, (req,res)=>{
 	res.redirect(route)
 })
 
-router.get('/:id', secured, chkHead,(req,res)=>{	
+router.get('/:id', secured, chkHead, chkAssigned,(req,res)=>{	
 	let issue_id = [req.params.id]
 	let query1 = `SELECT BIN_TO_UUID(id) AS id,summary,opened_by,open_date,end_date,assigned_to,status,priority,project_id,description FROM issue WHERE id = UUID_TO_BIN(?)`
 	let query2 = `SELECT username from people_info WHERE id= ?`
@@ -93,38 +95,86 @@ router.get('/:id', secured, chkHead,(req,res)=>{
 	})
 })
 
-router.put('/:id', secured, Head, (req,res)=>{
+router.put('/:id', secured, Assigned, chkHead, (req,res)=>{
 	let issue_id = req.params.id
-	let username = req.body.usr
-	
-	let query1 = `SELECT id FROM people_info WHERE username= ?`
-	let query2 = `UPDATE issue SET summary= ?, priority= ?, assigned_to= ? WHERE id= UUID_TO_BIN(?)`
-		
-	connection.query(query1, [username], (err1,result1,fields1)=>{
-		if( err1 || ( username.length!==0 && result1.length===0) ){
-			req.flash("error", "No such user exist")
-			res.redirect("/issues/" + issue_id)
+
+	let query = `SELECT id FROM people_info WHERE username= ?`
+	connection.query(query, [res.locals.userIs], (err,result,fields)=>{
+		if(err){
+			req.flash("error","Server error")
+			res.redirect('/issues/' + issue_id)
 		} else{
-			let usr_id = null
-			if(username){
-				usr_id = result1[0].id
-			}
-			
-			let arr = [req.body.summary, Number(req.body.priority), usr_id, issue_id]
-			connection.query(query2, arr, (err2,result2,fields2)=>{
-				if(err2){
-					req.flash("error", "Couldn't update, member assigned issue is not member of project")
-					res.redirect("/issues/" + issue_id)
+			let person_id = result[0].id;
+
+			connection.query(`SELECT * FROM issue WHERE id= UUID_TO_BIN(?)`, [issue_id], (err3,result3,fields3)=>{
+				if(err3 || result3.length === 0){
+					req.flash("error","No such issue")
+					res.redirect("/issues")
 				} else{
-					req.flash("success", "Successfuly edited issue")
-					res.redirect('/issues/' + issue_id)
+					if(result3[0].assigned_to === person_id){
+						let query2 = `UPDATE issue SET summary= ?, priority= ? WHERE id= UUID_TO_BIN(?)`
+							
+						let arr = [req.body.summary, Number(req.body.priority), issue_id]
+						connection.query(query2, arr, (err2,result2,fields2)=>{
+							if(err2){
+								req.flash("error", "Couldn't update issue")
+								res.redirect("/issues/" + issue_id)
+							} else{
+								req.flash("success", "Successfuly edited issue")
+								res.redirect('/issues/' + issue_id)
+							}
+						})
+					} else{
+						let username = req.body.usr
+	
+						let query1 = `SELECT id FROM people_info WHERE username= ?`
+						let query2 = `UPDATE issue SET summary= ?, priority= ?, assigned_to= ? WHERE id= UUID_TO_BIN(?)`
+							
+						connection.query(query1, [username], (err1,result1,fields1)=>{
+							if( err1 || ( username.length!==0 && result1.length===0) ){
+								req.flash("error", "No such user exist")
+								res.redirect("/issues/" + issue_id)
+							} else{
+								let usr_id = null
+								if(username){
+									usr_id = result1[0].id
+								}
+								console.log(res.locals);
+								let arr = [req.body.summary, Number(req.body.priority), usr_id, issue_id]
+								connection.query(query2, arr, (err2,result2,fields2)=>{
+									if(err2){
+										req.flash("error", "Couldn't update, member assigned issue is not member of project")
+										res.redirect("/issues/" + issue_id)
+									} else{
+										req.flash("success", "Successfuly edited issue")
+										res.redirect('/issues/' + issue_id)
+									}
+								})
+							}
+						})
+					}
 				}
 			})
 		}
 	})
 })
 
-router.get('/:id/edit', secured, Head, (req,res)=>{
+router.delete('/:id', secured, Head, (req,res)=>{
+	let issue_id = req.params.id
+
+	let query = `DELETE FROM issue WHERE id= UUID_TO_BIN(?)`
+	connection.query(query, [issue_id], (err,result,fields)=>{
+		if(err){
+			req.flash("error", "Couldn't delete issue")
+			res.redirect("/issues/" + issue_id)
+		} else{
+			req.flash("success", "Issue deleted successfuly")
+			res.redirect("/issues")
+		}
+	})
+})
+
+router.get('/:id/edit', secured, Assigned, (req,res)=>{
 	let issue_id = req.params.id
 	let query1 = `SELECT project_id FROM issue WHERE id=UUID_TO_BIN(?)`
 	let query2 = `SELECT username FROM (SELECT person_id FROM work WHERE project_id= ?) AS T1 INNER JOIN people_info ON T1.person_id=people_info.id`
