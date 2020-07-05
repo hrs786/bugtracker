@@ -1,0 +1,63 @@
+// INSERT HEAD TO WORK UNDER PROJECT
+
+DELIMITER $$
+CREATE TRIGGER after_new_project AFTER INSERT ON project FOR EACH ROW BEGIN INSERT INTO work (person_id,project_id) values(NEW.head_id,NEW.id); END $$
+DELIMITER ;
+
+----------------------------------------
+// CHECK ISSUE ASSIGNED_TO IS MEMBER OF PROJECT AND SET ISSUE STATUS
+
+DELIMITER $$
+CREATE TRIGGER before_update_issue
+BEFORE UPDATE ON issue FOR EACH ROW
+BEGIN
+DECLARE errorMessage varchar(255);
+DECLARE prjt INT;
+SET errorMessage="assigned_to is not member of project";
+select project_id into prjt from issue where id=OLD.id;
+IF(NEW.assigned_to NOT IN (select person_id from work where project_id=prjt)) THEN
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT=errorMessage;
+END IF;
+IF NEW.assigned_to IS NULL THEN
+SET NEW.status=1;
+ELSEIF NEW.assigned_to IS NOT NULL AND NEW.status=1 THEN
+SET NEW.status=2;
+END IF;
+END$$
+DELIMITER ;
+
+
+------------------------------------
+// BEFORE DELETE FROM WORK
+// -> CHECK IF HEAD OF ANY PROJECT THEN DON'T DELETE
+// -> IF ASSIGNED ANY ISSUE SET ASSIGNED_TO=NULL
+
+DELIMITER $$
+CREATE TRIGGER befor_delete_work
+BEFORE DELETE ON work FOR EACH ROW
+BEGIN
+DECLARE errorMessage varchar(255);
+DECLARE head varchar(255);
+SET errorMessage="Head of project can't be deleted";
+SELECT head_id INTO head FROM project WHERE id=OLD.project_id;
+IF OLD.person_id=head THEN
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT=errorMessage;
+END IF;
+UPDATE issue SET assigned_to=NULL WHERE assigned_to=OLD.person_id AND project_id=OLD.project_id;
+END$$
+DELIMITER ;
+
+--------------------------------------------
+// ADD HEAD TO WORK ON UPDATE PROJECT
+
+DELIMITER $$
+CREATE TRIGGER after_update_project
+AFTER UPDATE ON project FOR EACH ROW
+BEGIN
+DECLARE cnt INT;
+SELECT COUNT(*) INTO cnt FROM work WHERE person_id=NEW.head_id AND project_id=OLD.id;
+IF cnt=0 THEN
+INSERT INTO work(project_id,person_id) values(OLD.id,NEW.head_id);
+END IF;
+END$$
+DELIMITER ;

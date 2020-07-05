@@ -502,7 +502,12 @@ router.post('/:id/members', secured, Admin, (req,res)=>{
 		
 			connection.query(query2, [member_id, Number(project_id)], (err2,result2,fields2)=>{
 				if(err2){
-					req.flash("error", "Member couldn't be added")
+					let errMessage = "Member couldn't be added"
+					if(err2.sqlState === '23000'){
+						errMessage = "Member exist already"
+					}
+					
+					req.flash("error", errMessage)
 					res.redirect("/projects/" + project_id + "/members")
 				} else{
 					// handle duplicate insertion error
@@ -532,13 +537,21 @@ router.delete('/:id/members', secured, Admin, (req,res)=>{
 		
 			connection.query(query2, [member_id, Number(project_id)], (err2,result2,fields2)=>{
 				if(err2){
-					req.flash("error", "Member couldn't be deleted")
+					let errMessage = "Member couldn't be deleted"
+					if(err2.sqlState === '45000'){
+						errMessage = err2.sqlMessage
+					}
+					req.flash("error", errMessage)
 					res.redirect("/projects/" + project_id + "/members")
 				} else{
 					// handle no entry error
 					let mem = '/projects/' + project_id + '/members'
 					
-					req.flash("success", "Member deleted successfuly")
+					let successMessage = "Member deleted successfuly"
+					if(result2.affectedRows === 0){
+						successMessage = "No such member exist"
+					}
+					req.flash("success", successMessage)
 					res.redirect(mem)
 				}
 			})

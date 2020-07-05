@@ -1,7 +1,6 @@
 doctype html
 html
   head
-    title
     title Edit Issue
     link(rel="icon", href="/icons/bug.png")
     link(rel='stylesheet', type='text/css', href='/bootstrap/css/bootstrap.min.css')
@@ -26,6 +25,14 @@ html
               datalist#available-usernames
                 -for(var i=0; i<users.length; i++)
                   option(value=users[i].username)
+        - if(isAuthenticated && (isHead || isAdmin))
+          .form-group
+            label(for='status') Issue Staus
+              small.text-muted (if not assigned, will set to UNASSIGNED)
+            select.form-control(name='status')
+              option(value=1, selected= issue_info.status==1) UNASSIGNED
+              option(value=2, selected= issue_info.status==2) OPEN
+              option(value=3, selected= issue_info.status==3) RESOLVED
         .form-group
           label(for='priority') Issue Priority
           select.form-control(name='priority')

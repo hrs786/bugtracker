@@ -1,0 +1,88 @@
+// TABLE PEOPLE INFO
+CREATE TABLE `people_info` (
+  `id` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) 
+
+
+
+
+// TABLE PROJECT
+CREATE TABLE `project` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `head_id` varchar(255) NOT NULL,
+  `start_date` date NOT NULL,
+  `exp_end_date` date NOT NULL,
+  `end_date` date DEFAULT NULL,
+  `summary` varchar(255) NOT NULL,
+  `status` int DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `FK_HEAD` (`head_id`),
+  KEY `FK_STATUS` (`status`),
+  CONSTRAINT `FK_HEAD` FOREIGN KEY (`head_id`) REFERENCES `people_info` (`id`),
+  CONSTRAINT `FK_STATUS` FOREIGN KEY (`status`) REFERENCES `project_status` (`id`)
+)
+
+// TABLE PROJECT STATUS   [(1,'NEW'),(2,'OPEN'),(3,'INPROGRESS'),(4,'COMPLETED'),(5,'ONHOLD')]
+CREATE TABLE `project_status` (
+  `id` int NOT NULL,
+  `status` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) 
+
+
+
+
+// TABLE ISSUE
+CREATE TABLE `issue` (
+  `id` binary(16) NOT NULL,
+  `summary` varchar(255) NOT NULL,
+  `opened_by` varchar(255) NOT NULL,
+  `open_date` datetime DEFAULT NULL,
+  `end_date` datetime DEFAULT NULL,
+  `assigned_to` varchar(255) DEFAULT NULL,
+  `status` int DEFAULT '1',
+  `priority` int DEFAULT '2',
+  `project_id` int NOT NULL,
+  `description` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `FK_ISSUE_PROJECT` (`project_id`),
+  KEY `FK_OPEN` (`opened_by`),
+  KEY `FK_ISSUE_PRIORITY` (`status`),
+  KEY `FK_ASSIGNEDTO` (`assigned_to`),
+  CONSTRAINT `FK_ASSIGNEDTO` FOREIGN KEY (`assigned_to`) REFERENCES `people_info` (`id`),
+  CONSTRAINT `FK_ISSUE_PRIORITY` FOREIGN KEY (`status`) REFERENCES `issue_priority` (`id`),
+  CONSTRAINT `FK_ISSUE_PROJECT` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`),
+  CONSTRAINT `FK_ISSUE_STATUS` FOREIGN KEY (`status`) REFERENCES `issue_status` (`id`),
+  CONSTRAINT `FK_OPEN` FOREIGN KEY (`opened_by`) REFERENCES `people_info` (`id`)
+)
+
+// TABLE ISSUE PRIORITY   [(1,'MINOR'),(2,'NORMAL'),(3,'MAJOR'),(4,'CRITICAL')]
+CREATE TABLE `issue_priority` (
+  `id` int NOT NULL,
+  `priority` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) 
+
+// TABLE ISSUE STATUS  [(1,'UNASSIGNED'),(2,'OPEN'),(3,'RESOLVED')]
+CREATE TABLE `issue_status` (
+  `id` int NOT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) 
+
+
+
+
+// TABLE WORK
+CREATE TABLE `work` (
+  `person_id` varchar(255) NOT NULL,
+  `project_id` int NOT NULL,
+  UNIQUE KEY `UC_TUPLE` (`person_id`,`project_id`),
+  KEY `FK_PROJECT` (`project_id`),
+  CONSTRAINT `FK_PERSON` FOREIGN KEY (`person_id`) REFERENCES `people_info` (`id`),
+  CONSTRAINT `FK_PROJECT` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`)
+)

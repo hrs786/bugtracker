@@ -111,24 +111,11 @@ router.put('/:id', secured, Assigned, chkHead, (req,res)=>{
 					req.flash("error","No such issue")
 					res.redirect("/issues")
 				} else{
-					if(result3[0].assigned_to === person_id){
-						let query2 = `UPDATE issue SET summary= ?, priority= ? WHERE id= UUID_TO_BIN(?)`
-							
-						let arr = [req.body.summary, Number(req.body.priority), issue_id]
-						connection.query(query2, arr, (err2,result2,fields2)=>{
-							if(err2){
-								req.flash("error", "Couldn't update issue")
-								res.redirect("/issues/" + issue_id)
-							} else{
-								req.flash("success", "Successfuly edited issue")
-								res.redirect('/issues/' + issue_id)
-							}
-						})
-					} else{
+					if(res.locals.isAdmin || res.locals.isHead){
 						let username = req.body.usr
 	
 						let query1 = `SELECT id FROM people_info WHERE username= ?`
-						let query2 = `UPDATE issue SET summary= ?, priority= ?, assigned_to= ? WHERE id= UUID_TO_BIN(?)`
+						let query2 = `UPDATE issue SET summary= ?, priority= ?, status= ?, assigned_to= ? WHERE id= UUID_TO_BIN(?)`
 							
 						connection.query(query1, [username], (err1,result1,fields1)=>{
 							if( err1 || ( username.length!==0 && result1.length===0) ){
@@ -139,8 +126,8 @@ router.put('/:id', secured, Assigned, chkHead, (req,res)=>{
 								if(username){
 									usr_id = result1[0].id
 								}
-								console.log(res.locals);
-								let arr = [req.body.summary, Number(req.body.priority), usr_id, issue_id]
+								
+								let arr = [req.body.summary, Number(req.body.priority), Number(req.body.status), usr_id, issue_id]
 								connection.query(query2, arr, (err2,result2,fields2)=>{
 									if(err2){
 										req.flash("error", "Couldn't update, member assigned issue is not member of project")
@@ -150,6 +137,19 @@ router.put('/:id', secured, Assigned, chkHead, (req,res)=>{
 										res.redirect('/issues/' + issue_id)
 									}
 								})
+							}
+						})
+					} else{
+						let query2 = `UPDATE issue SET summary= ?, priority= ? WHERE id= UUID_TO_BIN(?)`
+							
+						let arr = [req.body.summary, Number(req.body.priority), issue_id]
+						connection.query(query2, arr, (err2,result2,fields2)=>{
+							if(err2){
+								req.flash("error", "Couldn't update issue")
+								res.redirect("/issues/" + issue_id)
+							} else{
+								req.flash("success", "Successfuly edited issue")
+								res.redirect('/issues/' + issue_id)
 							}
 						})
 					}
