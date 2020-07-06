@@ -29,19 +29,50 @@ var issue_priority = {
 }
 
 router.get('/', secured, (req,res)=>{
-	let query = `SELECT BIN_TO_UUID(id) AS id,status,priority,summary FROM issue ORDER BY open_date DESC`
-	connection.query(query,(err,results,fields)=>{
-		if(err){
-			req.flash("error", "Server error")
+	let target_path = "/issues"
+
+	let limit = 10
+	let page_no = 0
+	if(req.query.page){
+		page_no = Number(req.query.page)
+	}
+	let offset = limit*page_no
+
+	let arr = [limit, offset]
+	let query = `SELECT BIN_TO_UUID(id) AS id,status,priority,summary FROM issue ORDER BY open_date DESC LIMIT ? OFFSET ?`
+	let query1 = `SELECT COUNT(*) AS CNT FROM issue`
+
+	connection.query(query1, (err1,result1,fields1)=>{
+		if(err1){
+			req.flash("error","Server error")
 			res.redirect("/dashboard")
 		} else{
-			results.forEach((result)=>{
-				result.status = issue_status[result.status]
-				result.priority = issue_priority[result.priority]
+			let total = result1[0].CNT
+			let max_page = Math.ceil(total/limit)
+			
+			let next_page = page_no + 1
+			let prev_page = page_no - 1
+			if(page_no === 0){
+				prev_page = page_no
+			}
+			if(page_no === max_page - 1){
+				next_page = page_no
+			}
+			
+			connection.query(query, arr, (err,results,fields)=>{
+				if(err){
+					req.flash("error", "Server error")
+					res.redirect("/dashboard")
+				} else{
+					results.forEach((result)=>{
+						result.status = issue_status[result.status]
+						result.priority = issue_priority[result.priority]
+					})
+					
+					
+					res.render('issues',{issues:results, srch: true, notShow: true, page_no: page_no, prev_page: prev_page, next_page: next_page, target_path: target_path})
+				}
 			})
-			
-			
-			res.render('issues',{issues:results, srch: true, notShow: true})
 		}
 	})
 })

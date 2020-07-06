@@ -58,5 +58,23 @@ html
                         td= issue.status
                         td= issue.priority
                         td= issue.summary
+              
+              nav.page-list(aria-label='Page navigation example')
+                ul.pagination
+                  li.page-item
+                    - let previous_page = target_path + '?page=' + prev_page
+                    - if(prev_page === 0){
+                    -    previous_page = target_path
+                    - }
+                    a.page-link(href=previous_page, aria-label='Previous')
+                      span(aria-hidden='true') «
+                      span.sr-only Previous
+                  li.page-item
+                    a.page-link(href= target_path + '?page=' + page_no)= page_no
+                  li.page-item
+                    a.page-link(href= target_path + '?page=' + next_page, aria-label='Next')
+                      span(aria-hidden='true') »
+                      span.sr-only Next
+
 
     include includes/footer.pug

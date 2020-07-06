@@ -310,28 +310,58 @@ router.get('/:id/issues', secured, (req,res)=>{
 })
 
 router.get('/:id/issues/unassigned', secured, (req,res)=>{
+	let limit = 10
+	let page_no = 0
+	if(req.query.page){
+		page_no = Number(req.query.page)
+	}
+	let offset = limit*page_no
+
 	let project_id = req.params.id
-	let arr = [1, Number(project_id)]
+	let get_unassigned_path = "/projects/" + project_id + "/issues/unassigned"
+
+	let arr = [1, Number(project_id), limit, offset]
+	let query = `SELECT COUNT(*) AS CNT FROM issue WHERE status = ? AND project_id = ?`
 	let query1 = `SELECT name FROM project WHERE id= ?`
-	let query2 = `SELECT BIN_TO_UUID(id) AS id,status,priority,summary FROM issue WHERE status = ? AND project_id = ? ORDER BY open_date DESC`
+	let query2 = `SELECT BIN_TO_UUID(id) AS id,status,priority,summary FROM issue WHERE status = ? AND project_id = ? ORDER BY open_date DESC LIMIT ? OFFSET ?`
 	
-	connection.query(query1, [project_id],(err1,result1,fields1)=>{
-		if( err1 || result1.length===0 ){
-			req.flash("error", "No such project exist")
-			res.redirect("/projects/" + project_id)
+	connection.query(query, [arr[0],arr[1]], (err,result,fields)=>{
+		if(err){
+			req.flash("error", "Server error")
+			res.redirect("/projects/" + project_id + "/issues")
 		} else{
-			let project_name = result1[0].name
-			connection.query(query2, arr, (err2,results2,fields2)=>{
-				if(err2){
-					req.flash("error", "Server error")
-					res.redirect("/projects/" + project_id + "/issues")
+
+			let total = result[0].CNT
+			let max_page = Math.ceil(total/limit)
+			
+			let next_page = page_no + 1
+			let prev_page = page_no - 1
+			if(page_no === 0){
+				prev_page = page_no
+			}
+			if(page_no === max_page - 1){
+				next_page = page_no
+			}
+
+			connection.query(query1, [project_id],(err1,result1,fields1)=>{
+				if( err1 || result1.length===0 ){
+					req.flash("error", "No such project exist")
+					res.redirect("/projects/" + project_id)
 				} else{
-					results2.forEach((result)=>{
-						result.status = issue_status[result.status]
-						result.priority = issue_priority[result.priority]
+					let project_name = result1[0].name
+					connection.query(query2, arr, (err2,results2,fields2)=>{
+						if(err2){
+							req.flash("error", "Server error")
+							res.redirect("/projects/" + project_id + "/issues")
+						} else{
+							results2.forEach((result)=>{
+								result.status = issue_status[result.status]
+								result.priority = issue_priority[result.priority]
+							})
+			
+							res.render('issues',{issues:results2, srch: false, project_name: project_name, project_id: project_id, page_no: page_no, next_page: next_page, prev_page: prev_page, target_path: get_unassigned_path})
+						}
 					})
-	
-					res.render('issues',{issues:results2, srch: false, project_name: project_name, project_id: project_id})
 				}
 			})
 		}
@@ -367,28 +397,59 @@ router.post('/:id/issues/unassigned', secured, upload.single('info'),(req,res)=>
 })
 
 router.get('/:id/issues/open', secured, (req,res)=>{
+	let limit = 10
+	let page_no = 0
+	if(req.query.page){
+		page_no = Number(req.query.page)
+	}
+	let offset = limit*page_no
+
+
 	let project_id = req.params.id
-	let arr = [2, Number(project_id)]
+	let target_path = "/projects/" + project_id + "/issues/open"
+
+	let arr = [2, Number(project_id), limit, offset]
+	let query = `SELECT COUNT(*) AS CNT FROM issue WHERE status = ? AND project_id = ?`
 	let query1 = `SELECT name FROM project WHERE id= ?`
 	let query2 = `SELECT BIN_TO_UUID(id) AS id,status,priority,summary FROM issue WHERE status = ? AND project_id = ? ORDER BY open_date DESC`
 
-	connection.query(query1, [project_id],(err1,result1,fields1)=>{
-		if( err1 || result1.length===0 ){
-			req.flash("error", "No such project exist")
-			res.redirect("/projects")
+	connection.query(query, [arr[0], arr[1]], (err,result,fields)=>{
+		if(err){
+			req.flash("error", "Server error")
+			res.redirect("/projects/" + project_id + "/issues")
 		} else{
-			let project_name = result1[0].name
-			connection.query(query2, arr, (err2,results2,fields2)=>{
-				if(err2){
-					req.flash("error", "Server error")
-					res.redirect("/projects/" + project_id + "/issues")
+
+			let total = result[0].CNT
+			let max_page = Math.ceil(total/limit)
+			
+			let next_page = page_no + 1
+			let prev_page = page_no - 1
+			if(page_no === 0){
+				prev_page = page_no
+			}
+			if(page_no === max_page - 1){
+				next_page = page_no
+			}
+
+			connection.query(query1, [project_id],(err1,result1,fields1)=>{
+				if( err1 || result1.length===0 ){
+					req.flash("error", "No such project exist")
+					res.redirect("/projects")
 				} else{
-					results2.forEach((result)=>{
-						result.status = issue_status[result.status]
-						result.priority = issue_priority[result.priority]
+					let project_name = result1[0].name
+					connection.query(query2, arr, (err2,results2,fields2)=>{
+						if(err2){
+							req.flash("error", "Server error")
+							res.redirect("/projects/" + project_id + "/issues")
+						} else{
+							results2.forEach((result)=>{
+								result.status = issue_status[result.status]
+								result.priority = issue_priority[result.priority]
+							})
+			
+							res.render('issues',{issues:results2, srch: false, project_name: project_name, project_id: project_id, page_no: page_no, next_page: next_page, prev_page: prev_page, target_path: target_path})
+						}
 					})
-	
-					res.render('issues',{issues:results2, srch: false, project_name: project_name, project_id: project_id})
 				}
 			})
 		}
@@ -396,27 +457,57 @@ router.get('/:id/issues/open', secured, (req,res)=>{
 })
 
 router.get('/:id/issues/resolved', secured, (req,res)=>{
+	let limit = 10
+	let page_no = 0
+	if(req.query.page){
+		page_no = Number(req.query.page)
+	}
+	let offset = limit*page_no
+
 	let project_id = req.params.id
-	let arr = [3, Number(req.params.id)]
+	let target_path = "/projects/" + project_id + "/issues/resolved"
+
+	let arr = [3, Number(req.params.id), limit, offset]
+	let query = `SELECT COUNT(*) AS CNT FROM issue WHERE status = ? AND project_id = ?`
 	let query1 = `SELECT name FROM project WHERE id= ?`
-	let query2 = `SELECT BIN_TO_UUID(id) AS id,status,priority,summary FROM issue WHERE status = ? AND project_id = ? ORDER BY open_date DESC`
+	let query2 = `SELECT BIN_TO_UUID(id) AS id,status,priority,summary FROM issue WHERE status = ? AND project_id = ? ORDER BY open_date DESC LIMIT ? OFFSET ?`
 	
-	connection.query(query1, [project_id],(err1,result1,fields1)=>{
-		if( err1 || result1.length===0 ){
-			req.flash("error", "No such project exist")
-			res.redirect("/projects")
+	connection.query(query, [arr[0], arr[1]], (err,result,fields)=>{
+		if(err){
+			req.flash("error", "Server error")
+			res.redirect("/projects/" + project_id + "/issues")
 		} else{
-			let project_name = result1[0].name
-			connection.query(query2, arr, (err2,results2,fields2)=>{
-				if(err2){
-					req.flash("error", "Server error")
-					res.redirect("/projects/" + project_id + "/issues")
+
+			let total = result[0].CNT
+			let max_page = Math.ceil(total/limit)
+			
+			let next_page = page_no + 1
+			let prev_page = page_no - 1
+			if(page_no === 0){
+				prev_page = page_no
+			}
+			if(page_no === max_page - 1){
+				next_page = page_no
+			}
+
+			connection.query(query1, [project_id],(err1,result1,fields1)=>{
+				if( err1 || result1.length===0 ){
+					req.flash("error", "No such project exist")
+					res.redirect("/projects")
 				} else{
-					results2.forEach((result)=>{
-						result.status = issue_status[result.status]
-						result.priority = issue_priority[result.priority]
+					let project_name = result1[0].name
+					connection.query(query2, arr, (err2,results2,fields2)=>{
+						if(err2){
+							req.flash("error", "Server error")
+							res.redirect("/projects/" + project_id + "/issues")
+						} else{
+							results2.forEach((result)=>{
+								result.status = issue_status[result.status]
+								result.priority = issue_priority[result.priority]
+							})
+							res.render('issues',{issues:results2, srch: false, project_name: project_name, project_id: project_id, page_no: page_no, next_page: next_page, prev_page: prev_page, target_path: target_path})
+						}
 					})
-					res.render('issues',{issues:results2, srch: false, project_name: project_name, project_id: project_id})
 				}
 			})
 		}

@@ -18,6 +18,7 @@
 	margin-left: 5%;
 	margin-top:1.5rem;
 	margin-bottom:1.5rem;
+	border: 0px;
 }
 
 .header-custom{
@@ -114,4 +115,12 @@
 
 table{
 	border: 2px solid black;
+}
+
+.page-list{
+	margin-top: 1rem;
+}
+
+.pagination{
+	justify-content: center;
 }
