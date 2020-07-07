@@ -1,4 +1,4 @@
-html {
+/*html {
 	font-size: 17px;
 }
 @media (max-width: 900px) {
@@ -6,7 +6,7 @@ html {
 }
 @media (max-width: 400px) {
 	html { font-size: 10px; }
-}
+}*/
 
 
 .sidenav{
@@ -20,9 +20,26 @@ html {
   padding-top: 20px;
 }
 
-@media screen and (max-height: 450px) {
+@media all and (max-width: 1023px){
+  .sidenav{
+    display: none;
+  }
+}
+
+/*@media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
+}*/
+
+#dropdownMenuButton{
+  background-color: #C5D0D9;
+  color: black;
+}
+
+@media all and (min-width: 1024px){
+  #drop{
+    display: none;
+  }
 }
 
 .sidenav a {

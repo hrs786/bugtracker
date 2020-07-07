@@ -19,6 +19,7 @@ CREATE TABLE `project` (
   `end_date` date DEFAULT NULL,
   `summary` varchar(255) NOT NULL,
   `status` int DEFAULT '1',
+  `link` varchar(255),
   PRIMARY KEY (`id`),
   KEY `FK_HEAD` (`head_id`),
   KEY `FK_STATUS` (`status`),

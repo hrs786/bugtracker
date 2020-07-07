@@ -1,7 +1,12 @@
 .main{
-	margin-left: 160px;
 	padding: 0px 0px;
 	background-color: 	#ffffff;
+}
+
+@media all and (min-width: 1024px){
+	.main{
+		margin-left: 160px;
+	}
 }
 
 .clr-side{

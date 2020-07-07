@@ -1,11 +1,18 @@
 .main{
-	margin-left: 160px;
 	padding: 0px 0px;
 }
 
 .form{
     margin-bottom: 8rem;
-	margin-left: 160px;
+}
+
+@media all and (min-width: 1024px){
+	.main{
+		margin-left: 160px;
+	}
+	.form{
+		margin-left: 160px;
+	}
 }
 
 .form form{
@@ -33,8 +40,8 @@
 }
 
 .form-group{
-    margin-left: 35%;
-    margin-right: 35%;
+    margin-left: 33%;
+    margin-right: 33%;
 }
 
 .project{

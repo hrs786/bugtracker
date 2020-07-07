@@ -19,6 +19,7 @@ const main = require("./routes/main")
 const profile = require("./routes/profile")
 const issues = require("./routes/issues")
 const projects = require("./routes/projects")
+const repo = require("./routes/repo")
 
 
 
@@ -121,6 +122,7 @@ app.use("/",main)
 app.use("/profile",profile)
 app.use("/issues",issues)
 app.use("/projects",projects)
+app.use("/repositories", repo)
 
 // unknown route
 app.get('*', (req,res)=>{

@@ -2,6 +2,7 @@ doctype html
 html
   head
     title Projects
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     link(rel="icon", href="/icons/bug.png")
     link(rel='stylesheet', type='text/css', href='/bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/head.css')
@@ -80,15 +81,12 @@ html
 
     include includes/footer.pug
 
-
-  script(type='text/javascript', src='/bootstrap/js/jquery-3.5.1.slim.min.js')
-  script(type='text/javascript', src='/bootstrap/js/bootstrap.bundle.min.js')
-  script.
-    $('#exampleModalCenter').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget) // Button that triggered the modal
-      var name = button.data('projectname')
-      var projectTarget = button.data('project') //  Extract info from data-* attributes
-      var modal = $(this)
-      modal.find('.modal-body').text('Are you sure you want to delete project "' + name + '" and all related data')
-      $('#confirmForm').attr("action",'/projects/' + projectTarget + '?_method=DELETE')
-    })
+    script.
+      $('#exampleModalCenter').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var name = button.data('projectname')
+        var projectTarget = button.data('project') //  Extract info from data-* attributes
+        var modal = $(this)
+        modal.find('.modal-body').text('Are you sure you want to delete project "' + name + '" and all related data')
+        $('#confirmForm').attr("action",'/projects/' + projectTarget + '?_method=DELETE')
+      })

@@ -1,0 +1,70 @@
+doctype html
+html
+  head
+    title Repositiories
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    link(rel="icon", href="/icons/bug.png")
+    link(rel='stylesheet', type='text/css', href='/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/head.css')
+    link(rel="stylesheet", href="/stylesheets/repo.css")
+
+  body
+    include includes/head.pug
+
+    .main.h-100
+      .container-fluid.h-100
+        .row.h-100
+          .col-xs-12.col-md-12
+            table.data-table
+              thead
+                tr
+                  th Id
+                  th Name
+                  th Link
+              tbody 
+                each project in projects
+                  - if(project.link){
+                      tr
+                        td
+                          a(href="/projects/" + project.id)= project.id
+                        td= project.name
+                        td
+                          a(href= project.link, target='_blank')= project.link
+                          button.btn.btn-info.edit-repo(type='button', data-toggle='modal', data-target='#exampleModalCenter', data-projectId=project.id, data-projectName=project.name) Edit
+                  - } else{
+                      tr
+                        td
+                          a(href="/projects/" + project.id)= project.id
+                        td= project.name
+                        td= '[NOT AVAILABLE]'
+                          button.btn.btn-info.edit-repo(type='button', data-toggle='modal', data-target='#exampleModalCenter', data-projectId=project.id, data-projectName=project.name) Edit
+                  - }
+
+          // Modal
+          #exampleModalCenter.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalCenterTitle', aria-hidden='true')
+            .modal-dialog.modal-dialog-centered(role='document')
+              .modal-content
+                .modal-header
+                  h5#exampleModalLongTitle.modal-title Edit Repository
+                  button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') ×
+                .modal-body
+                  form#confirmForm(action='#', method='POST')
+                      .form-group
+                        label(for='exampleFormControlInput1')  Repository Link
+                        input#exampleFormControlInput1.form-control(type='url', placeholder='url', name='repo_link')
+                      button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                      button#sp.btn.btn-danger(type='submit') Confirm
+                .modal-footer
+
+    include includes/footer.pug
+
+    script.
+      $('#exampleModalCenter').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var name = button.data('projectname')
+        var projectTarget = button.data('projectid') //  Extract info from data-* attributes
+        var modal = $(this)
+        modal.find('.modal-title').text('Edit - Project Id: ' + projectTarget + "(" + name + ")")
+        $('#confirmForm').attr("action",'/repositories/' + projectTarget + '?_method=PUT')
+      })

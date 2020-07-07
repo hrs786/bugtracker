@@ -1,11 +1,18 @@
 .main{
-	margin-left: 160px;
 	padding: 0px 0px;
 }
 
 .form{
 	height:100%;
-	margin-left: 160px;
+}
+
+@media all and (min-width: 1024px){
+	.main{
+		margin-left: 160px;
+	}
+	.form{
+		margin-left: 160px;
+	}
 }
 
 .form form{

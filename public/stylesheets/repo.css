@@ -1,0 +1,62 @@
+.main{
+	padding: 0px 0px;
+}
+
+@media all and (min-width: 1024px){
+	.main{
+		margin-left: 160px;
+	}
+}
+
+.data-table{
+    margin-top: 3rem;
+    margin-left: 10%;
+    margin-right: 10%;
+	width:80%;
+	border-collapse:collapse;
+}
+
+.data-table th,.data-table td{
+	padding:5px;
+}
+
+.data-table thead tr{
+	background-color: #99B1C6;
+}
+
+.data-table tbody tr:nth-child(even){
+	background-color: #f2f2f2;
+}
+
+.data-table thead th:nth-of-type(1){
+	width:10%;
+}
+.data-table thead th:nth-of-type(2){
+	width: 30%;
+}
+.data-table thead th:nth-of-type(3){
+	width: 60%;
+}
+
+.data-table thead td:nth-of-type(1){
+	width:10%;
+}
+.data-table thead td:nth-of-type(2){
+	width: 30%;
+}
+.data-table thead td:nth-of-type(3){
+	width: 60%;
+}
+
+.data-table th, .data-table td{
+	text-align:center;
+}
+
+.edit-repo{
+    font-size: 0.8rem;
+    float: right;
+}
+
+#sp{
+	margin-left: 1rem;
+}

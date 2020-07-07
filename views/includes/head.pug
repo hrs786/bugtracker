@@ -12,6 +12,16 @@ nav.navbar.navbar-expand-lg.navbar-custom.py-2
         | Logout
         span.sr-only (current)
 
+.dropdown#drop
+  button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+    | Menu
+  .dropdown-menu(aria-labelledby='dropdownMenuButton')
+    a.dropdown-item(href='/profile') Profile
+    a.dropdown-item(href='/dashboard') Home
+    a.dropdown-item(href='/issues') Issues
+    a.dropdown-item(href='/projects') Projects
+    a.dropdown-item(href='/repositories') Repos
+
 
 .sidenav.clr-side
   .clr-side-hvr
@@ -37,6 +47,12 @@ nav.navbar.navbar-expand-lg.navbar-custom.py-2
       img.align-center(src='/icons/grid.svg', width='24', height='24', alt='')
       br
       | 				Projects
+  hr
+  .clr-side-hvr
+    a(href='/repositories')
+      img.align-center(src='/icons/link.svg', width='24', height='24', alt='')
+      br
+      | 				Repositories
 
 - if(success && success.length > 0)
   .message.alert.alert-success(role='alert')= success

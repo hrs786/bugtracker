@@ -1,6 +1,11 @@
 .main{
 	height: 100%;
-	margin-left: 160px;
+}
+
+@media all and (min-width: 1024px){
+	.main{
+		margin-left: 160px;
+	}
 }
 
 .info{
