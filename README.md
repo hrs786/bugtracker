@@ -1,4 +1,5 @@
 # BugTracker
+[Deployed app at heroku](https://successtracker.herokuapp.com/)  
 This is an issue tracking web-app for projects
 
 ## Tech/Frameworks used
