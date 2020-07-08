@@ -1,14 +1,15 @@
 # BugTracker
 [Deployed app at heroku](https://successtracker.herokuapp.com/)  
 This is an issue tracking web-app for projects  
+<br/>
 ![](public/images/img1.png)  
 ![](public/images/img2.png)
 
 ## Tech/Frameworks used
-- express
-- mysqljs
-- pug
-- auth0 authentication api
+- [express](https://expressjs.com/)
+- [mysqljs](https://github.com/mysqljs/mysql)
+- [pug](https://github.com/pugjs/pug)
+- [auth0 authentication api](https://auth0.com/)
 
 ## Features
 ### Roles of users
