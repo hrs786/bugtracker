@@ -205,7 +205,7 @@ router.delete('/:id', secured, Head, (req,res)=>{
 	})
 })
 
-router.get('/:id/edit', secured, Assigned, (req,res)=>{
+router.get('/:id/edit', secured, Assigned, chkHead, (req,res)=>{
 	let issue_id = req.params.id
 	let query1 = `SELECT project_id FROM issue WHERE id=UUID_TO_BIN(?)`
 	let query2 = `SELECT username FROM (SELECT person_id FROM work WHERE project_id= ?) AS T1 INNER JOIN people_info ON T1.person_id=people_info.id`

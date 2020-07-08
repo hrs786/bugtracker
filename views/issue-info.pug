@@ -18,7 +18,7 @@ html
         .header
           | Issue Details
         
-        .body
+        .data
           p.left
             span.wt Assigned To: 
             span= assigned_user
@@ -75,3 +75,7 @@ html
 
   script(type='text/javascript', src='/bootstrap/js/jquery-3.5.1.slim.min.js')
   script(type='text/javascript', src='/bootstrap/js/bootstrap.bundle.min.js')
+  script.
+    console.log('hjk')
+    let target = document.getElementsByClassName('summary')[0]
+    target.innerHTML= issue[0].summary

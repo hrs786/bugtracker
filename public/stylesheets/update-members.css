@@ -2,10 +2,6 @@
 	padding: 0px 0px;
 }
 
-.form{
-    margin-bottom: 8rem;
-}
-
 @media all and (min-width: 1024px){
 	.main{
 		margin-left: 160px;
@@ -40,6 +36,7 @@
 }
 
 .form-group{
+	width: 34%;
     margin-left: 33%;
     margin-right: 33%;
 }

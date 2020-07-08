@@ -21,11 +21,11 @@ html
         .form-group
           label(for='head-usr') Username
           div
-            input(list='available-usernames', name='usr', required, autocomplete="off", value=headUsername)
+            input.form-control(list='available-usernames', name='usr', required, autocomplete="off", value=headUsername)
             datalist#available-usernames
               -for(var i=0; i<users.length; i++)
                 option(value=users[i].username)
-        button.btn.btn-primary(type='submit') Submit
+        button.btn.btn-primary.btn-sm(type='submit') Submit
 
     .form
       form(action='/projects/' + project_id + '/members?_method=DELETE', method='POST')
@@ -34,10 +34,10 @@ html
         .form-group
           label(for='head-usr') Username
           div
-            input(list='available-usernames', name='usr', required, autocomplete="off", value=headUsername)
+            input.form-control(list='available-usernames', name='usr', required, autocomplete="off", value=headUsername)
             datalist#available-usernames
               -for(var i=0; i<users.length; i++)
                 option(value=users[i].username)
-        button.btn.btn-primary(type='submit') Submit
+        button.btn.btn-primary.btn-sm(type='submit') Submit
 
     include includes/footer.pug

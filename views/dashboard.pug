@@ -16,91 +16,56 @@ html
       .container-fluid.h-100
         .row.h-100
           .col-xs-12.col-md-6
+
             .card.card-custom
               .card-header.header-custom
-                a(href='#')
-                  img.align-center(src='/icons/list-ul.svg', width='16', height='16', alt='')
-                  | 					    		Assigned
+                img.align-center(src='/icons/list-ul.svg', width='16', height='16', alt='')
+                | 					    		Member of Projects
               .card-body.zero-pad
                 table.data-table
+                  thead
+                    tr
+                      th Id
+                      th Name
                   tbody
-                    tr
-                      td.card-iss-id id=89
-                      td rule no.1 - never trust
-                    tr
-                      td.card-iss-id id=2567
-                      td rule no.2 - ik
+                    each project in projects
+                      tr
+                        td.card-iss-id
+                          a(href="/projects/" + project.Id, target='_blank')= project.Id
+                        td= project.Name
             
-            .card.card-custom
+            .card.card-custom#assigned
               .card-header.header-custom
-                a(href='#')
-                  img.align-center(src='/icons/list-ul.svg', width='16', height='16', alt='')
-                  | 					    		Unassigned
+                img.align-center(src='/icons/list-ul.svg', width='16', height='16', alt='')
+                | 					    		Issues Assigned to you
               .card-body.zero-pad
                 table.data-table
+                  thead
+                    tr
+                      th Id
+                      th Summary
                   tbody
-                    tr
-                      td.card-iss-id id=89
-                      td rule no.1 - never trust
-                    tr
-                      td.card-iss-id id=2567
-                      td rule no.2 - ik
-            
-            .card.card-custom
-              .card-header.header-custom
-                a(href='#')
-                  img.align-center(src='/icons/list-ul.svg', width='16', height='16', alt='')
-                  | 					    		Open
-              .card-body.zero-pad
-                table.data-table
-                  tbody
-                    tr
-                      td.card-iss-id id=89
-                      td rule no.1 - never trust
-                    tr
-                      td.card-iss-id id=2567
-                      td rule no.2 - ik
-            
-            .card.card-custom
-              .card-header.header-custom
-                a(href='#')
-                  img.align-center(src='/icons/list-ul.svg', width='16', height='16', alt='')
-                  | 					    		Resolved
-              .card-body.zero-pad
-                table.data-table
-                  tbody
-                    tr
-                      td.card-iss-id id=89
-                      td rule no.1 - never trust
-                    tr
-                      td.card-iss-id id=2567
-                      td rule no.2 - ik
-                    tr
-                      td.card-iss-id id=2567
-                      td rule no.2 - ik
-                    tr
-                      td.card-iss-id id=2567
-                      td rule no.2 - ik
-                    tr
-                      td.card-iss-id id=2567
-                      td rule no.2 - ik
+                    each issue in issues
+                      tr
+                        td.card-iss-id
+                          a(href="/issues/" + issue.id, target='_blank')= issue.id
+                        td= issue.summary
           
           
           .col-xs-12.col-md-6
             .card.card-custom
               .card-header.header-custom
-                a(href='#')
-                  img.align-center(src='/icons/list-ul.svg', width='16', height='16', alt='')
-                  | 					    		Timeline
+                img.align-center(src='/icons/list-ul.svg', width='16', height='16', alt='')
+                | 					    		Timeline(to do)
               .card-body.zero-pad
                 table.data-table
                   tbody
                     tr
-                      td.card-iss-id id=89
-                      td rule no.1 - never trust
+                      td.card-iss-id id
+                      td issues in projects in which member
                     tr
-                      td.card-iss-id id=2567
-                      td rule no.2 - ik
+                      td.card-iss-id id
+                      td comments
 
     include includes/footer.pug
   

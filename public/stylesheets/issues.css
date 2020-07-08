@@ -68,18 +68,18 @@
 	width: 50%;
 }
 
-.data-table thead td:nth-of-type(1){
+.data-table tbody td:nth-of-type(1){
 	width:10%;
 }
-.data-table thead td:nth-of-type(2){
+.data-table tbody td:nth-of-type(2){
 	width: 20%;
 }
-.data-table thead td:nth-of-type(3){
+.data-table tbody td:nth-of-type(3){
 	width: 20%;
 }
-.data-table thead td:nth-of-type(4){
+.data-table tbody td:nth-of-type(4){
 	width: 50%;
-}
+}	
 
 .data-table th, .data-table td{
 	text-align:center;
@@ -95,6 +95,21 @@
 	border: none;
 	margin-right: 16px;
 	font-size: 1rem;
+}
+
+.search .btn{
+	margin-top: 0.4rem;
+}
+
+@media all and (max-width: 1023px){
+	.card-custom{
+		text-align: center;
+	}
+	.search, .form-group{
+		display: block;
+		float: none;
+		margin: auto;
+	}
 }
 
 #redirect{
@@ -128,4 +143,8 @@ table{
 
 .pagination{
 	justify-content: center;
+}
+
+.horizontal-scroll-wrapper{
+	overflow-x: auto;
 }

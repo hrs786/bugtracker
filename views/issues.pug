@@ -28,54 +28,52 @@ html
         .project
           div= 'Project - ' + project_name + ' ( id: ' + project_id + ')'
 
-      .container-fluid.h-100
-        .row.h-100
-          .col-xs-12.col-md-12
-            .card.card-custom
-              .card-header.header-custom
-                img.align-center(src='/icons/list-ul.svg', width='30', height='30', alt='')
-                | 					    		Get Issue By Id
-                if(srch)
-                  .search
-                    form.form-inline(action='/issues/search', method='GET')
-                      .form-group
-                        input#search.form-control(type='text', name='search', placeholder='#issueID')
-                        input.btn.btn-dark(type='submit', value='Search')
-                else
-                  a#redirect(href="/issues")= 'Search by id'
-              .card-body.zero-pad
-                table.data-table
-                  thead
-                    tr
-                      th Id
-                      th Status
-                      th Priority
-                      th Summary
-                  tbody 
-                    each issue in issues
-                      tr
-                        td
-                          a(href='/issues/' + issue.id, target='_blank')= issue.id
-                        td= issue.status
-                        td= issue.priority
-                        td= issue.summary
-              
-              nav.page-list(aria-label='Page navigation example')
-                ul.pagination
-                  li.page-item
-                    - let previous_page = target_path + '?page=' + prev_page
-                    - if(prev_page === 0){
-                    -    previous_page = target_path
-                    - }
-                    a.page-link(href=previous_page, aria-label='Previous')
-                      span(aria-hidden='true') «
-                      span.sr-only Previous
-                  li.page-item
-                    a.page-link(href= target_path + '?page=' + page_no)= page_no
-                  li.page-item
-                    a.page-link(href= target_path + '?page=' + next_page, aria-label='Next')
-                      span(aria-hidden='true') »
-                      span.sr-only Next
+      
+      .card.card-custom
+        .card-header.header-custom
+          img.align-center(src='/icons/list-ul.svg', width='30', height='30', alt='')
+          | 					    		Get Issue By Id
+          if(srch)
+            .search
+              form.form-inline(action='/issues/search', method='GET')
+                .form-group
+                  input#search.form-control(type='text', name='search', placeholder='#issueID')
+                  input.btn.btn-dark(type='submit', value='Search')
+          else
+            a#redirect(href="/issues")= 'Search by id'
+        .card-body.zero-pad.horizontal-scroll-wrapper
+          table.data-table
+            thead
+              tr
+                th Id
+                th Status
+                th Priority
+                th Summary
+            tbody 
+              each issue in issues
+                tr
+                  td
+                    a(href='/issues/' + issue.id, target='_blank')= issue.id
+                  td= issue.status
+                  td= issue.priority
+                  td= issue.summary
+        
+        nav.page-list(aria-label='Page navigation example')
+          ul.pagination
+            li.page-item
+              - let previous_page = target_path + '?page=' + prev_page
+              - if(prev_page === 0){
+              -    previous_page = target_path
+              - }
+              a.page-link(href=previous_page, aria-label='Previous')
+                span(aria-hidden='true') «
+                span.sr-only Previous
+            li.page-item
+              a.page-link(href= target_path + '?page=' + page_no)= page_no
+            li.page-item
+              a.page-link(href= target_path + '?page=' + next_page, aria-label='Next')
+                span(aria-hidden='true') »
+                span.sr-only Next
 
 
     include includes/footer.pug

@@ -1,13 +1,12 @@
-nav.navbar.navbar-expand-lg.navbar-custom.py-2
+nav#hd.navbar.navbar-expand.navbar-custom.py-2
   a.navbar-brand.text-white(href='/')
     img.d-inline-block.align-center(src='/icons/bug.png', width='64', height='64', alt='')
     | 	  	BugTracker
   button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarNavAltMarkup', aria-controls='navbarNavAltMarkup', aria-expanded='false', aria-label='Toggle navigation')
     span.navbar-toggler-icon
-  #navbarNavAltMarkup.collapse.navbar-collapse.justify-content-end
+  #navbarNavAltMarkup.ml-auto.justify-content-end
     .navbar-nav
-      span#user.text-white= 'Hi, ' + userIs
-    .navbar-nav
+      .nav-item#user.text-white= userIs
       a.nav-item.nav-link.text-white.nit-custom(href='/logout')
         | Logout
         span.sr-only (current)

@@ -17,13 +17,8 @@
 	margin-bottom:1.5rem;
 }
 
-.card-custom a{
-	color:white;
-}
-
 .card-iss-id{
 	width:10%;
-	border-right:2px solid black;
 }
 
 .header-custom{	
@@ -39,7 +34,11 @@
 	padding:5px;
 }
 
-.data-table tr:nth-child(even){
+.data-table thead tr{
+	background-color: #99B1C6;
+}
+
+.data-table tbody tr:nth-child(even){
 	background-color: #f2f2f2;
 }
 
@@ -47,6 +46,23 @@
 	padding:0px;
 }
 
-table{
-	border: 2px solid black;
+#assigned table td:nth-of-type(1) a{
+	font-size: 0.8rem;
+}
+
+thead th:nth-of-type(1){
+	width:15%
+}
+thead th:nth-of-type(2){
+	width:85%
+}
+tbody td:nth-of-type(1){
+	width:15%
+}
+tbody td:nth-of-type(2){
+	width:85%
+}
+
+table th, table td{
+	text-align:center;
 }

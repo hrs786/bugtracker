@@ -30,14 +30,26 @@ html
                         td= project.name
                         td
                           a(href= project.link, target='_blank')= project.link
-                          button.btn.btn-info.edit-repo(type='button', data-toggle='modal', data-target='#exampleModalCenter', data-projectId=project.id, data-projectName=project.name) Edit
+                      - if(isAdmin){
+                        tr
+                          td
+                          td
+                          td
+                            button.btn.btn-info.edit-repo(type='button', data-toggle='modal', data-target='#exampleModalCenter', data-projectId=project.id, data-projectName=project.name) Edit
+                      - }
                   - } else{
                       tr
                         td
                           a(href="/projects/" + project.id)= project.id
                         td= project.name
                         td= '[NOT AVAILABLE]'
-                          button.btn.btn-info.edit-repo(type='button', data-toggle='modal', data-target='#exampleModalCenter', data-projectId=project.id, data-projectName=project.name) Edit
+                      - if(isAdmin){
+                        tr
+                          td
+                          td
+                          td
+                            button.btn.btn-info.edit-repo(type='button', data-toggle='modal', data-target='#exampleModalCenter', data-projectId=project.id, data-projectName=project.name) Edit
+                      - }
                   - }
 
           // Modal
