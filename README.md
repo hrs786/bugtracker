@@ -1,6 +1,8 @@
 # BugTracker
 [Deployed app at heroku](https://successtracker.herokuapp.com/)  
-This is an issue tracking web-app for projects
+This is an issue tracking web-app for projects  
+![](public/images/img1.png)  
+![](public/images/img2.png)
 
 ## Tech/Frameworks used
 - express
